@@ -1,7 +1,8 @@
 ﻿using task_1135.Domain.Models;
 using task_1135.Domain.Repositories;
+using task_1135.Infrastructure.Storage;
 
-namespace task_1135.Infrastructure
+namespace task_1135.Infrastructure.Repositories
 {
     public class BookRepository : IBookRepository
     {

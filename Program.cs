@@ -2,7 +2,9 @@
 using task_1135.Application.Services;
 using task_1135.Domain.Repositories;
 using task_1135.Domain.Services;
-using task_1135.Infrastructure;
+using task_1135.Infrastructure.Middlewares;
+using task_1135.Infrastructure.Repositories;
+using task_1135.Infrastructure.Storage;
 
 namespace task_1135
 {
@@ -24,6 +26,7 @@ namespace task_1135
             // Register application services
             builder.Services.AddScoped<ITimeService, TimeService>();
             builder.Services.AddScoped<IBookService, BookService>();
+            builder.Services.AddSingleton<ILogService, ConsoleLogService>();
 
             // Register infrastructure services
             builder.Services.AddSingleton<BookStorage>();
@@ -45,6 +48,7 @@ namespace task_1135
 
             app.UseAuthorization();
 
+            app.UseMiddleware<TimingMiddleware>();
 
             app.MapControllers();
 
