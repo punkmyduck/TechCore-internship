@@ -16,7 +16,6 @@ namespace task_1135.Infrastructure.Repositories
         {
             _books = bookStorage.Books;
             _settings = options.Value;
-            Console.WriteLine("delay: " + _settings.AsyncDelayInMilliseconds);
         }
         public Task Add(Book book)
         {
