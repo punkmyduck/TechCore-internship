@@ -21,6 +21,7 @@ namespace task_1135
             // Add services to the container.
 
             builder.Services.AddControllers();
+            builder.Services.AddHealthChecks();
 
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
@@ -69,6 +70,8 @@ namespace task_1135
             app.UseMiddleware<ExceptionHandlerMiddleware>();
 
             app.MapControllers();
+
+            app.MapHealthChecks("/healthz");
 
             app.Run();
         }
