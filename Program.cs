@@ -1,6 +1,8 @@
 
 using task_1135.Application.Services;
+using task_1135.Domain.Repositories;
 using task_1135.Domain.Services;
+using task_1135.Infrastructure;
 
 namespace task_1135
 {
@@ -20,8 +22,11 @@ namespace task_1135
 
 
             // Register application services
-
             builder.Services.AddScoped<ITimeService, TimeService>();
+
+            // Register infrastructure services
+            builder.Services.AddSingleton<BookStorage>();
+            builder.Services.AddScoped<IBookRepository, BookRepository>();
 
             var app = builder.Build();
 
