@@ -2,6 +2,7 @@
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using task_1135.Application.Services;
+using task_1135.Application.Settings;
 using task_1135.Application.Validators;
 using task_1135.Domain.Repositories;
 using task_1135.Domain.Services;
@@ -26,6 +27,9 @@ namespace task_1135
             builder.Services.AddSwaggerGen();
 
 
+
+            //Appsettings configuration
+            builder.Services.Configure<MySettings>(builder.Configuration.GetSection("MySettings"));
 
             // Register application services
             builder.Services.AddScoped<ITimeService, TimeService>();
