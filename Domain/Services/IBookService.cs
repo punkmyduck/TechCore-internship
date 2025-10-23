@@ -1,5 +1,5 @@
-﻿using task_1135.Domain.Models;
-using task_1135.Presentation.DTOs;
+﻿using task_1135.Application.DTOs;
+using task_1135.Domain.Models;
 
 namespace task_1135.Domain.Services
 {

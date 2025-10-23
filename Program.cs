@@ -1,5 +1,8 @@
 
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using task_1135.Application.Services;
+using task_1135.Application.Validators;
 using task_1135.Domain.Repositories;
 using task_1135.Domain.Services;
 using task_1135.Infrastructure.Middlewares;
@@ -17,6 +20,7 @@ namespace task_1135
             // Add services to the container.
 
             builder.Services.AddControllers();
+
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
@@ -32,7 +36,10 @@ namespace task_1135
             builder.Services.AddSingleton<BookStorage>();
             builder.Services.AddScoped<IBookRepository, BookRepository>();
 
-
+            //Register fluent validators
+            builder.Services.AddFluentValidationAutoValidation();
+            builder.Services.AddFluentValidationClientsideAdapters();
+            builder.Services.AddValidatorsFromAssemblyContaining<CreateBookDtoFluentValidator>();
 
 
             var app = builder.Build();
