@@ -30,7 +30,7 @@ namespace task_1135
 
             //Appsettings configuration
             builder.Services.Configure<MySettings>(builder.Configuration.GetSection("MySettings"));
-            builder.Services.Configure<MySettings>(builder.Configuration.GetSection("AsyncSettings"));
+            builder.Services.Configure<AsyncSettings>(builder.Configuration.GetSection("AsyncSettings"));
 
             // Register application services
             builder.Services.AddScoped<ITimeService, TimeService>();
