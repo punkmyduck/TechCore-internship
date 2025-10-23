@@ -1,4 +1,7 @@
 
+using task_1135.Application.Services;
+using task_1135.Domain.Services;
+
 namespace task_1135
 {
     public class Program
@@ -14,7 +17,15 @@ namespace task_1135
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
+
+
+            // Register application services
+
+            builder.Services.AddScoped<ITimeService, TimeService>();
+
             var app = builder.Build();
+
+
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
