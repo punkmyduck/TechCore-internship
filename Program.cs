@@ -23,6 +23,7 @@ namespace task_1135
 
             // Register application services
             builder.Services.AddScoped<ITimeService, TimeService>();
+            builder.Services.AddScoped<IBookService, BookService>();
 
             // Register infrastructure services
             builder.Services.AddSingleton<BookStorage>();

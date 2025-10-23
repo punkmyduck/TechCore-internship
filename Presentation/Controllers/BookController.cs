@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using task_1135.Domain.Models;
 using task_1135.Domain.Repositories;
+using task_1135.Domain.Services;
 using task_1135.Presentation.DTOs;
 
 namespace task_1135.Presentation.Controllers
@@ -10,23 +11,23 @@ namespace task_1135.Presentation.Controllers
     [Route("[controller]")]
     public class BookController : ControllerBase
     {
-        private readonly IBookRepository _bookRepository;
-        public BookController(IBookRepository bookRepository)
+        private readonly IBookService _bookService;
+        public BookController(IBookService bookService)
         {
-            _bookRepository = bookRepository;
+            _bookService = bookService;
         }
 
         [HttpGet]
         public async Task<IActionResult> GetBooks()
         {
-            var books = await _bookRepository.GetAll();
+            var books = await _bookService.GetAllAsync();
             return Ok(books);
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetBookById([FromRoute] int id)
         {
-            var book = await _bookRepository.GetById(id);
+            var book = await _bookService.GetByIdAsync(id);
             if (book == null) return NotFound();
             return Ok(book);
         }
@@ -34,30 +35,22 @@ namespace task_1135.Presentation.Controllers
         [HttpPost]
         public async Task<IActionResult> AddBook([FromBody] CreateBookDto createBookDto)
         {
-            var book = new Book(createBookDto.Title, createBookDto.Author, createBookDto.YearPublished);
-            await _bookRepository.Add(book);
+            var book = await _bookService.AddAsync(createBookDto);
             return CreatedAtAction(nameof(GetBookById), new {id = book.Id}, book);
         }
 
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateBook([FromRoute] int id, [FromBody] UpdateBookDto updateBookDto)
         {
-            var book = await _bookRepository.GetById(id);
-            if (book == null) return NotFound();
-            book.UpdateDetails(updateBookDto.Title, updateBookDto.Author, updateBookDto.YearPublished);
-
-            //ничего не делает, просто демонстрационная заглушка, поскольку обновляется ссылочное значение уже в контроллере
-            await _bookRepository.Update(book);
-
+            var book = await _bookService.UpdateAsync(id, updateBookDto);
             return Ok(book);
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteBook([FromRoute] int id)
         {
-            var book = await _bookRepository.GetById(id);
-            if (book == null) return NotFound();
-            await _bookRepository.DeleteById(id);
+            var deleted = await _bookService.DeleteAsync(id);
+            if (!deleted) return NotFound();
             return NoContent();
         }
     }
