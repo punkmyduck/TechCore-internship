@@ -39,16 +39,26 @@ namespace task_1135.Presentation.Controllers
             return CreatedAtAction(nameof(GetBookById), new {id = book.Id}, book);
         }
 
-        [HttpPut]
-        public IActionResult UpdateBook()
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateBook([FromRoute] int id, [FromBody] UpdateBookDto updateBookDto)
         {
-            return Ok();
+            var book = await _bookRepository.GetById(id);
+            if (book == null) return NotFound();
+            book.UpdateDetails(updateBookDto.Title, updateBookDto.Author, updateBookDto.YearPublished);
+
+            //ничего не делает, просто демонстрационная заглушка, поскольку обновляется ссылочное значение уже в контроллере
+            await _bookRepository.Update(book);
+
+            return Ok(book);
         }
 
-        [HttpDelete]
-        public IActionResult DeleteBook()
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteBook([FromRoute] int id)
         {
-            return Ok();
+            var book = await _bookRepository.GetById(id);
+            if (book == null) return NotFound();
+            await _bookRepository.DeleteById(id);
+            return NoContent();
         }
     }
 }

@@ -28,5 +28,12 @@
             Author = author;
             YearPublished = yearPublished;
         }
+
+        public void UpdateDetails(string title, string author, int yearPublished)
+        {
+            Title = title;
+            Author = author;
+            YearPublished = yearPublished;
+        }
     }
 }

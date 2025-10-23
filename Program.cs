@@ -28,9 +28,10 @@ namespace task_1135
             builder.Services.AddSingleton<BookStorage>();
             builder.Services.AddScoped<IBookRepository, BookRepository>();
 
+
+
+
             var app = builder.Build();
-
-
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
