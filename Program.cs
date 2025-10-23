@@ -49,6 +49,7 @@ namespace task_1135
             app.UseAuthorization();
 
             app.UseMiddleware<TimingMiddleware>();
+            app.UseMiddleware<ExceptionHandlerMiddleware>();
 
             app.MapControllers();
 
