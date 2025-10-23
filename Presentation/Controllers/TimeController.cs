@@ -13,6 +13,10 @@ namespace task_1135.Presentation.Controllers
             _timeService = timeService;
         }
 
+        /// <summary>
+        /// Получить текущее время
+        /// </summary>
+        /// <returns>Текущее время</returns>
         [HttpGet(Name = "GetTime")]
         public IActionResult Get()
         {

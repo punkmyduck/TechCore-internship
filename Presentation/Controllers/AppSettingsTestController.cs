@@ -14,6 +14,10 @@ namespace task_1135.Presentation.Controllers
             _settings = options.Value;
         }
 
+        /// <summary>
+        /// Получить атрибуты настроек из appsettings.json
+        /// </summary>
+        /// <returns>Значения атрибутов настроек</returns>
         [HttpGet]
         public IActionResult Get()
         {

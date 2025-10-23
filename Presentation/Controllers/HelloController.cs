@@ -6,6 +6,10 @@ namespace task_1135.Presentation.Controllers
     [Route("[controller]")]
     public class HelloController : ControllerBase
     {
+        /// <summary>
+        /// Получить приветствие
+        /// </summary>
+        /// <returns>Строка "Hello, World!"</returns>
         [HttpGet(Name = "Hello")]
         public IActionResult Get()
         {

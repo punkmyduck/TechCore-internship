@@ -1,4 +1,4 @@
-
+using System.Reflection;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using task_1135.Application.Services;
@@ -24,7 +24,11 @@ namespace task_1135
 
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
+            builder.Services.AddSwaggerGen(options =>
+            {
+                var xmlFileName = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFileName));
+            });
 
 
 
