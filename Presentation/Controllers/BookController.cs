@@ -17,6 +17,10 @@ namespace task_1135.Presentation.Controllers
             _bookService = bookService;
         }
 
+        /// <summary>
+        /// Получить список всех книг
+        /// </summary>
+        /// <returns>Список книг</returns>
         [HttpGet]
         public async Task<IActionResult> GetBooks()
         {
@@ -24,6 +28,11 @@ namespace task_1135.Presentation.Controllers
             return Ok(books);
         }
 
+        /// <summary>
+        /// Получить книгу по указанному id
+        /// </summary>
+        /// <param name="id">Идентификатор книги</param>
+        /// <returns>Книга с указанным id или NotFound() если книги с указанным id не существует</returns>
         [HttpGet("{id}")]
         public async Task<IActionResult> GetBookById([FromRoute] int id)
         {
@@ -32,6 +41,11 @@ namespace task_1135.Presentation.Controllers
             return Ok(book);
         }
 
+        /// <summary>
+        /// Добавить книгу в библиотеку
+        /// </summary>
+        /// <param name="createBookDto">Запись с атрибутами книги</param>
+        /// <returns>Информация о добавленной книге</returns>
         [HttpPost]
         public async Task<IActionResult> AddBook([FromBody] CreateBookDto createBookDto)
         {
@@ -39,6 +53,12 @@ namespace task_1135.Presentation.Controllers
             return CreatedAtAction(nameof(GetBookById), new {id = book.Id}, book);
         }
 
+        /// <summary>
+        /// Изменить существующую книгу
+        /// </summary>
+        /// <param name="id">Идентификатор книги</param>
+        /// <param name="updateBookDto">Запись с атрибутами книги</param>
+        /// <returns>Информация о измененной книге</returns>
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateBook([FromRoute] int id, [FromBody] UpdateBookDto updateBookDto)
         {
@@ -46,6 +66,11 @@ namespace task_1135.Presentation.Controllers
             return Ok(book);
         }
 
+        /// <summary>
+        /// Удалить книгу по указанному id
+        /// </summary>
+        /// <param name="id">Идентификатор книги</param>
+        /// <returns>NotFound если книги с указанным id не существует или NoContent, если книга успешно удалена</returns>
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteBook([FromRoute] int id)
         {
