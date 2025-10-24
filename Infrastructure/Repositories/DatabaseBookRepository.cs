@@ -35,7 +35,7 @@ namespace task_1135.Infrastructure.Repositories
 
         public async Task<IEnumerable<Book>> GetAllAsync()
         {
-            return await _context.Books.ToListAsync();
+            return await _context.Books.AsNoTracking().ToListAsync();
         }
 
         public async Task<Book?> GetByIdAsync(int id)

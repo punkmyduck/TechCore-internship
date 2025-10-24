@@ -23,7 +23,7 @@ namespace task_1135.Infrastructure.Repositories
 
         public async Task<IEnumerable<Author>> GetAllAsync()
         {
-            return await _context.Authors.ToListAsync();
+            return await _context.Authors.AsNoTracking().ToListAsync();
         }
 
         public Task<Author?> GetByIdAsync(int id)
