@@ -44,6 +44,11 @@ namespace task_1135.Infrastructure.Repositories
             return Task.FromResult(book);
         }
 
+        public Task SaveChangesAsync()
+        {
+            return Task.CompletedTask;
+        }
+
         public async Task UpdateAsync(int id, Book updatedBook)
         {
             var book = await GetByIdAsync(id);
