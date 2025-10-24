@@ -1,29 +1,48 @@
 ﻿using task_1135.Application.DTOs;
 using task_1135.Domain.Models;
+using task_1135.Domain.Repositories;
 using task_1135.Domain.Services;
 
 namespace task_1135.Application.Services
 {
     public class AuthorService : IAuthorService
     {
-        public Task<Author> AddAsync(CreateAuthorDto createAuthorDto)
+        private readonly IAuthorRepository _authorRepository;
+        public AuthorService(IAuthorRepository authorRepository)
         {
-            throw new NotImplementedException();
+            _authorRepository = authorRepository;
+        }
+        public async Task<Author> AddAsync(CreateAuthorDto createAuthorDto)
+        {
+            var author = new Author
+            {
+                Name = createAuthorDto.Name
+            };
+
+            await _authorRepository.Add(author);
+
+            return author;
         }
 
-        public Task<bool> DeleteByIdAsync(int id)
+        public async Task<bool> DeleteByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            var author = await _authorRepository.GetById(id);
+            if (author == null)
+            {
+                return false;
+            }
+            await _authorRepository.DeleteById(id);
+            return true;
         }
 
-        public Task<IEnumerable<Author>> GetAllAsync()
+        public async Task<IEnumerable<Author>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            return await _authorRepository.GetAll();
         }
 
-        public Task<Author?> GetByIdAsync(int id)
+        public async Task<Author?> GetByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            return await _authorRepository.GetById(id);
         }
     }
 }
