@@ -22,11 +22,11 @@ namespace task_1135.Application.Services
         {
             const string sql = @"
                 SELECT a.""Name"" AS AuthorName,
-                       COUNT(ba.""BookId"") AS BookCount
+                       COUNT(ba.""BooksId"") AS BooksCount
                 FROM ""Authors"" a
-                LEFT JOIN ""BookAuthor"" ba ON a.""Id"" = ba.""AuthorsId""
+                LEFT JOIN ""BookAuthors"" ba ON a.""Id"" = ba.""AuthorsId""
                 GROUP BY a.""Name""
-                ORDER BY BookCount DESC;
+                ORDER BY BooksCount DESC;
             ";
 
             using var connection = CreateConnection();
