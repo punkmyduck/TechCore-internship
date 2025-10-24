@@ -1,13 +1,18 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using task_1135.Domain.Services;
 
 namespace task_1135.Infrastructure.Middlewares
 {
     public class ExceptionHandlerMiddleware
     {
         private readonly RequestDelegate _next;
-        public ExceptionHandlerMiddleware(RequestDelegate next)
+        private readonly ILogService _logService;
+        public ExceptionHandlerMiddleware(
+            RequestDelegate next,
+            ILogService logService)
         {
             _next = next;
+            _logService = logService;
         }
         public async Task InvokeAsync(HttpContext context)
         {
@@ -28,6 +33,7 @@ namespace task_1135.Infrastructure.Middlewares
                     Instance = context.Request.Path
                 };
 
+                _logService.Log(ex.Message + "\n" + ex.Source + "\n" + ex.StackTrace + "\n" + ex.InnerException);
                 await context.Response.WriteAsJsonAsync(problem);
             }
         }

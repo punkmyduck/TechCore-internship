@@ -10,5 +10,6 @@ namespace task_1135.Domain.Repositories
         Task UpdateAsync(int id, Book updatedBook);
         Task DeleteByIdAsync(int id);
         Task SaveChangesAsync();
+        Task AddBookAuthorAsync(int bookId, int authorId);
     }
 }

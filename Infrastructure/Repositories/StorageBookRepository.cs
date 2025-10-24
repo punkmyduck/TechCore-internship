@@ -26,6 +26,12 @@ namespace task_1135.Infrastructure.Repositories
             return Task.CompletedTask;
         }
 
+        public Task AddBookAuthorAsync(int bookId, int authorId)
+        {
+            _books.Find(b => b.Id == bookId)?.Authors.Add(new Author { Id = authorId, Name = "SomeName" });
+            return Task.CompletedTask;
+        }
+
         public Task DeleteByIdAsync(int id)
         {
             _books.RemoveAll(b => b.Id == id);
