@@ -49,6 +49,7 @@ namespace task_1135
             // Register infrastructure services
             builder.Services.AddSingleton<BookStorage>();
             builder.Services.AddScoped<IBookRepository, DatabaseBookRepository>();
+            builder.Services.AddScoped<IAuthorRepository, DatabaseAuthorRepository>();
 
             //Register fluent validators
             builder.Services.AddFluentValidationAutoValidation();
