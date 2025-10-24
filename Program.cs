@@ -45,6 +45,7 @@ namespace task_1135
             builder.Services.AddScoped<IBookService, BookService>();
             builder.Services.AddSingleton<ILogService, ConsoleLogService>();
             builder.Services.AddScoped<IAuthorService, AuthorService>();
+            builder.Services.AddScoped<IReportService, ReportService>();
 
             // Register infrastructure services
             builder.Services.AddSingleton<BookStorage>();
