@@ -1,6 +1,6 @@
 ﻿version: '3.8'
 services:
-  postgres:
+  db:
     image: postgres:16
     container_name: postgres_db
     restart: always
