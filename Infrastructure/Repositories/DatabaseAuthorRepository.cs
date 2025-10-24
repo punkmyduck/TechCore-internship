@@ -11,24 +11,24 @@ namespace task_1135.Infrastructure.Repositories
         {
             _context = context;
         }
-        public async Task Add(Author author)
+        public async Task AddAsync(Author author)
         {
             await _context.Authors.AddAsync(author);
             await _context.SaveChangesAsync();
         }
 
-        public async Task DeleteById(int id)
+        public async Task DeleteByIdAsync(int id)
         {
             await _context.Authors.Where(a => a.Id == id).ExecuteDeleteAsync();
             await _context.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<Author>> GetAll()
+        public async Task<IEnumerable<Author>> GetAllAsync()
         {
             return await _context.Authors.ToListAsync();
         }
 
-        public Task<Author?> GetById(int id)
+        public Task<Author?> GetByIdAsync(int id)
         {
             return _context.Authors.FirstOrDefaultAsync(a => a.Id == id);
         }

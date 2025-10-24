@@ -19,30 +19,30 @@ namespace task_1135.Application.Services
                 Name = createAuthorDto.Name
             };
 
-            await _authorRepository.Add(author);
+            await _authorRepository.AddAsync(author);
 
             return author;
         }
 
         public async Task<bool> DeleteByIdAsync(int id)
         {
-            var author = await _authorRepository.GetById(id);
+            var author = await _authorRepository.GetByIdAsync(id);
             if (author == null)
             {
                 return false;
             }
-            await _authorRepository.DeleteById(id);
+            await _authorRepository.DeleteByIdAsync(id);
             return true;
         }
 
         public async Task<IEnumerable<Author>> GetAllAsync()
         {
-            return await _authorRepository.GetAll();
+            return await _authorRepository.GetAllAsync();
         }
 
         public async Task<Author?> GetByIdAsync(int id)
         {
-            return await _authorRepository.GetById(id);
+            return await _authorRepository.GetByIdAsync(id);
         }
     }
 }
