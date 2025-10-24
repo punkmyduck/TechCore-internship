@@ -1,28 +1,36 @@
-﻿using task_1135.Domain.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using task_1135.Domain.Models;
 using task_1135.Domain.Repositories;
 
 namespace task_1135.Infrastructure.Repositories
 {
     public class DatabaseAuthorRepository : IAuthorRepository
     {
-        public Task Add(Author author)
+        private readonly BookContext _context;
+        public DatabaseAuthorRepository(BookContext context)
         {
-            throw new NotImplementedException();
+            _context = context;
+        }
+        public async Task Add(Author author)
+        {
+            await _context.Authors.AddAsync(author);
+            await _context.SaveChangesAsync();
         }
 
-        public Task DeleteById(int id)
+        public async Task DeleteById(int id)
         {
-            throw new NotImplementedException();
+            await _context.Authors.Where(a => a.Id == id).ExecuteDeleteAsync();
+            await _context.SaveChangesAsync();
         }
 
-        public Task<IEnumerable<Author>> GetAll()
+        public async Task<IEnumerable<Author>> GetAll()
         {
-            throw new NotImplementedException();
+            return await _context.Authors.ToListAsync();
         }
 
         public Task<Author?> GetById(int id)
         {
-            throw new NotImplementedException();
+            return _context.Authors.FirstOrDefaultAsync(a => a.Id == id);
         }
     }
 }
