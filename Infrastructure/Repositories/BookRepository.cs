@@ -8,6 +8,7 @@ namespace task_1135.Infrastructure.Repositories
 {
     public class BookRepository : IBookRepository
     {
+        private static int _id = 0;
         private List<Book> _books;
         private AsyncSettings _settings;
         public BookRepository(
@@ -19,6 +20,7 @@ namespace task_1135.Infrastructure.Repositories
         }
         public Task Add(Book book)
         {
+            book.Id = _id++;
             _books.Add(book);
             Task.Delay(_settings.AsyncDelayInMilliseconds).Wait();
             return Task.CompletedTask;
@@ -42,10 +44,16 @@ namespace task_1135.Infrastructure.Repositories
             return Task.FromResult(book);
         }
 
-        public Task Update(Book book)
+        public async Task Update(int id, Book updatedBook)
         {
+            var book = await GetById(id);
+            if (book == null) throw new InvalidOperationException("Book with this id not found");
+
+            book.Title = updatedBook.Title;
+            book.AuthorId = updatedBook.AuthorId;
+            book.YearPublished = updatedBook.YearPublished;
+
             Task.Delay(_settings.AsyncDelayInMilliseconds).Wait();
-            return Task.CompletedTask;
         }
     }
 }

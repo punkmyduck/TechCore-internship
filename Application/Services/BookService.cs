@@ -14,7 +14,12 @@ namespace task_1135.Application.Services
         }
         public async Task<Book> AddAsync(CreateBookDto createBookDto)
         {
-            var book = new Book(createBookDto.Title, createBookDto.Author, createBookDto.YearPublished);
+            var book = new Book
+            {
+                Title = createBookDto.Title,
+                AuthorId = createBookDto.AuthorId,
+                YearPublished = createBookDto.YearPublished
+            };
             await _bookRepository.Add(book);
             return book;
         }
@@ -43,10 +48,15 @@ namespace task_1135.Application.Services
         {
             var book = await _bookRepository.GetById(id);
             if (book == null) return null;
-            book.UpdateDetails(updateBookDto.Title, updateBookDto.Author, updateBookDto.YearPublished);
 
-            //ничего не делает, просто демонстрационная заглушка, поскольку обновляется ссылочное значение уже в контроллере
-            await _bookRepository.Update(book);
+            var updatedBook = new Book
+            {
+                Title = updateBookDto.Title,
+                AuthorId = updateBookDto.AuthorId,
+                YearPublished = updateBookDto.YearPublished
+            };
+
+            await _bookRepository.Update(id, updatedBook);
 
             return book;
         }

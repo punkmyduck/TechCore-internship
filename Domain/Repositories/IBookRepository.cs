@@ -7,7 +7,7 @@ namespace task_1135.Domain.Repositories
         Task<IEnumerable<Book>> GetAll();
         Task<Book?> GetById(int id);
         Task Add(Book book);
-        Task Update(Book book);
+        Task Update(int id, Book updatedBook);
         Task DeleteById(int id);
     }
 }
