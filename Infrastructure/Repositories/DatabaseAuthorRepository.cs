@@ -14,13 +14,11 @@ namespace task_1135.Infrastructure.Repositories
         public async Task AddAsync(Author author)
         {
             await _context.Authors.AddAsync(author);
-            await _context.SaveChangesAsync();
         }
 
         public async Task DeleteByIdAsync(int id)
         {
             await _context.Authors.Where(a => a.Id == id).ExecuteDeleteAsync();
-            await _context.SaveChangesAsync();
         }
 
         public async Task<IEnumerable<Author>> GetAllAsync()
@@ -31,6 +29,11 @@ namespace task_1135.Infrastructure.Repositories
         public Task<Author?> GetByIdAsync(int id)
         {
             return _context.Authors.FirstOrDefaultAsync(a => a.Id == id);
+        }
+
+        public async Task SaveChangesAsync()
+        {
+            await _context.SaveChangesAsync();
         }
     }
 }

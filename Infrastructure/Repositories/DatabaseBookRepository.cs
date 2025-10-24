@@ -14,7 +14,6 @@ namespace task_1135.Infrastructure.Repositories
         public async Task AddAsync(Book book)
         {
             await _context.Books.AddAsync(book);
-            await _context.SaveChangesAsync();
         }
 
         public async Task DeleteByIdAsync(int id)
@@ -34,14 +33,17 @@ namespace task_1135.Infrastructure.Repositories
             return await _context.Books.FirstOrDefaultAsync(b => b.Id == id);
         }
 
+        public async Task SaveChangesAsync()
+        {
+            await _context.SaveChangesAsync();
+        }
+
         public async Task UpdateAsync(int id, Book updatedBook)
         {
             var book = await GetByIdAsync(id);
-            if (book == null) throw new InvalidOperationException("Book with this id not found");
+            if (book == null) throw new KeyNotFoundException($"Book with Id = {id} not found");
             book.Title = updatedBook.Title;
-            book.AuthorId = updatedBook.AuthorId;
             book.YearPublished = updatedBook.YearPublished;
-            await _context.SaveChangesAsync();
         }
     }
 }

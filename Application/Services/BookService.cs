@@ -17,10 +17,12 @@ namespace task_1135.Application.Services
             var book = new Book
             {
                 Title = createBookDto.Title,
-                AuthorId = createBookDto.AuthorId,
                 YearPublished = createBookDto.YearPublished
             };
+
             await _bookRepository.AddAsync(book);
+            await _bookRepository.SaveChangesAsync();
+
             return book;
         }
 
@@ -28,7 +30,10 @@ namespace task_1135.Application.Services
         {
             var book = await _bookRepository.GetByIdAsync(id);
             if (book == null) return false;
+
             await _bookRepository.DeleteByIdAsync(id);
+            await _bookRepository.SaveChangesAsync();
+
             return true;
         }
 
@@ -52,11 +57,11 @@ namespace task_1135.Application.Services
             var updatedBook = new Book
             {
                 Title = updateBookDto.Title,
-                AuthorId = updateBookDto.AuthorId,
                 YearPublished = updateBookDto.YearPublished
             };
 
             await _bookRepository.UpdateAsync(id, updatedBook);
+            await _bookRepository.SaveChangesAsync();
 
             return book;
         }

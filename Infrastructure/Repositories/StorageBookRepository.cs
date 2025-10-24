@@ -50,7 +50,6 @@ namespace task_1135.Infrastructure.Repositories
             if (book == null) throw new InvalidOperationException("Book with this id not found");
 
             book.Title = updatedBook.Title;
-            book.AuthorId = updatedBook.AuthorId;
             book.YearPublished = updatedBook.YearPublished;
 
             Task.Delay(_settings.AsyncDelayInMilliseconds).Wait();

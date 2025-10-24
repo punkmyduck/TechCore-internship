@@ -15,8 +15,7 @@ namespace task_1135.Infrastructure
         {
             modelBuilder.Entity<Author>()
                 .HasMany(a => a.Books)
-                .WithOne(b => b.Author)
-                .HasForeignKey(b => b.AuthorId);
+                .WithMany(b => b.Authors);
 
             base.OnModelCreating(modelBuilder);
         }
