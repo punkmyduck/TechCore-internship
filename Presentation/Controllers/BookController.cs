@@ -67,6 +67,19 @@ namespace task_1135.Presentation.Controllers
         }
 
         /// <summary>
+        /// Добавить автора для книги
+        /// </summary>
+        /// <param name="bookId">Идентификатор книги</param>
+        /// <param name="authorId">Идентификатор автора</param>
+        /// <returns>Сообщение об успешном добавлении к книге автора</returns>
+        [HttpPost("{bookId}/authors/{authorId}")]
+        public async Task<IActionResult> AddAuthorToBook(int bookId, int authorId)
+        {
+            await _bookService.AddAuthorToBookAsync(bookId, authorId);
+            return Ok(new { message = "Author added to book" });
+        }
+
+        /// <summary>
         /// Удалить книгу по указанному id
         /// </summary>
         /// <param name="id">Идентификатор книги</param>

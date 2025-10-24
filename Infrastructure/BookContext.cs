@@ -13,10 +13,10 @@ namespace task_1135.Infrastructure
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Author>()
-                .HasMany(a => a.Books)
-                .WithOne(b => b.Author)
-                .HasForeignKey(b => b.AuthorId);
+            modelBuilder.Entity<Book>()
+                .HasMany(b => b.Authors)
+                .WithMany(a => a.Books)
+                .UsingEntity(j => j.ToTable("BookAuthors"));
 
             base.OnModelCreating(modelBuilder);
         }

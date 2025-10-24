@@ -26,6 +26,12 @@ namespace task_1135.Infrastructure.Repositories
             return Task.CompletedTask;
         }
 
+        public Task AddBookAuthorAsync(int bookId, int authorId)
+        {
+            _books.Find(b => b.Id == bookId)?.Authors.Add(new Author { Id = authorId, Name = "SomeName" });
+            return Task.CompletedTask;
+        }
+
         public Task DeleteByIdAsync(int id)
         {
             _books.RemoveAll(b => b.Id == id);
@@ -44,13 +50,17 @@ namespace task_1135.Infrastructure.Repositories
             return Task.FromResult(book);
         }
 
+        public Task SaveChangesAsync()
+        {
+            return Task.CompletedTask;
+        }
+
         public async Task UpdateAsync(int id, Book updatedBook)
         {
             var book = await GetByIdAsync(id);
             if (book == null) throw new InvalidOperationException("Book with this id not found");
 
             book.Title = updatedBook.Title;
-            book.AuthorId = updatedBook.AuthorId;
             book.YearPublished = updatedBook.YearPublished;
 
             Task.Delay(_settings.AsyncDelayInMilliseconds).Wait();

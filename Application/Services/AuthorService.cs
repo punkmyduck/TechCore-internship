@@ -20,6 +20,7 @@ namespace task_1135.Application.Services
             };
 
             await _authorRepository.AddAsync(author);
+            await _authorRepository.SaveChangesAsync();
 
             return author;
         }
@@ -31,7 +32,10 @@ namespace task_1135.Application.Services
             {
                 return false;
             }
+            
             await _authorRepository.DeleteByIdAsync(id);
+            await _authorRepository.SaveChangesAsync();
+
             return true;
         }
 

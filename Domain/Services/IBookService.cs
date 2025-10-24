@@ -6,9 +6,10 @@ namespace task_1135.Domain.Services
     public interface IBookService
     {
         Task<IEnumerable<Book>> GetAllAsync();
-        Task<Book?> GetByIdAsync(int id);
+        Task<GetBookDto?> GetByIdAsync(int id);
         Task<Book> AddAsync(CreateBookDto createBookDto);
-        Task<Book?> UpdateAsync(int id, UpdateBookDto updateBookDto);
+        Task<GetBookDto?> UpdateAsync(int id, UpdateBookDto updateBookDto);
         Task<bool> DeleteAsync(int id);
+        Task AddAuthorToBookAsync(int bookId, int authorId);
     }
 }

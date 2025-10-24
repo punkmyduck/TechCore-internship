@@ -14,7 +14,16 @@ namespace task_1135.Infrastructure.Repositories
         public async Task AddAsync(Book book)
         {
             await _context.Books.AddAsync(book);
-            await _context.SaveChangesAsync();
+        }
+
+        public async Task AddBookAuthorAsync(int bookId, int authorId)
+        {
+            var book = await GetByIdAsync(bookId);
+            var author = await _context.Authors.FindAsync(authorId);
+
+            if (book == null || author == null) throw new Exception("Book or Author not found");
+
+            if (!book.Authors.Any(a => a.Id == authorId)) book.Authors.Add(author);
         }
 
         public async Task DeleteByIdAsync(int id)
@@ -31,17 +40,21 @@ namespace task_1135.Infrastructure.Repositories
 
         public async Task<Book?> GetByIdAsync(int id)
         {
-            return await _context.Books.FirstOrDefaultAsync(b => b.Id == id);
+            var book = await _context.Books.Include(b => b.Authors).FirstOrDefaultAsync(b => b.Id == id);
+            return book;
+        }
+
+        public async Task SaveChangesAsync()
+        {
+            await _context.SaveChangesAsync();
         }
 
         public async Task UpdateAsync(int id, Book updatedBook)
         {
             var book = await GetByIdAsync(id);
-            if (book == null) throw new InvalidOperationException("Book with this id not found");
+            if (book == null) throw new KeyNotFoundException($"Book with Id = {id} not found");
             book.Title = updatedBook.Title;
-            book.AuthorId = updatedBook.AuthorId;
             book.YearPublished = updatedBook.YearPublished;
-            await _context.SaveChangesAsync();
         }
     }
 }
