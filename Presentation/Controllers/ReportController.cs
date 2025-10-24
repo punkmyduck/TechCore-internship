@@ -13,6 +13,10 @@ namespace task_1135.Presentation.Controllers
             _reportService = reportService;
         }
 
+        /// <summary>
+        /// Получить отчет со всеми авторами и количеством их книг
+        /// </summary>
+        /// <returns>Список отчетов с именем автором и количеством его книг</returns>
         [HttpGet]
         public async Task<IActionResult> GetBooksPerAuthor()
         {
