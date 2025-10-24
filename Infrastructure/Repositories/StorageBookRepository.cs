@@ -6,12 +6,12 @@ using task_1135.Infrastructure.Storage;
 
 namespace task_1135.Infrastructure.Repositories
 {
-    public class BookRepository : IBookRepository
+    public class StorageBookRepository : IBookRepository
     {
         private static int _id = 0;
         private List<Book> _books;
         private AsyncSettings _settings;
-        public BookRepository(
+        public StorageBookRepository(
             BookStorage bookStorage,
             IOptions<AsyncSettings> options)
         {
