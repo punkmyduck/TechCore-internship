@@ -1,11 +1,13 @@
 using System.Reflection;
 using FluentValidation;
 using FluentValidation.AspNetCore;
+using Microsoft.EntityFrameworkCore;
 using task_1135.Application.Services;
 using task_1135.Application.Settings;
 using task_1135.Application.Validators;
 using task_1135.Domain.Repositories;
 using task_1135.Domain.Services;
+using task_1135.Infrastructure;
 using task_1135.Infrastructure.Middlewares;
 using task_1135.Infrastructure.Repositories;
 using task_1135.Infrastructure.Storage;
@@ -31,7 +33,8 @@ namespace task_1135
                 options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFileName));
             });
 
-
+            //Database configuration
+            builder.Services.AddDbContext<BookContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
             //Appsettings configuration
             builder.Services.Configure<MySettings>(builder.Configuration.GetSection("MySettings"));
@@ -41,10 +44,12 @@ namespace task_1135
             builder.Services.AddScoped<ITimeService, TimeService>();
             builder.Services.AddScoped<IBookService, BookService>();
             builder.Services.AddSingleton<ILogService, ConsoleLogService>();
+            builder.Services.AddScoped<IAuthorService, AuthorService>();
 
             // Register infrastructure services
             builder.Services.AddSingleton<BookStorage>();
-            builder.Services.AddScoped<IBookRepository, BookRepository>();
+            builder.Services.AddScoped<IBookRepository, DatabaseBookRepository>();
+            builder.Services.AddScoped<IAuthorRepository, DatabaseAuthorRepository>();
 
             //Register fluent validators
             builder.Services.AddFluentValidationAutoValidation();

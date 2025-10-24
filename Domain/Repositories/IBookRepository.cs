@@ -4,10 +4,10 @@ namespace task_1135.Domain.Repositories
 {
     public interface IBookRepository
     {
-        Task<IEnumerable<Book>> GetAll();
-        Task<Book?> GetById(int id);
-        Task Add(Book book);
-        Task Update(Book book);
-        Task DeleteById(int id);
+        Task<IEnumerable<Book>> GetAllAsync();
+        Task<Book?> GetByIdAsync(int id);
+        Task AddAsync(Book book);
+        Task UpdateAsync(int id, Book updatedBook);
+        Task DeleteByIdAsync(int id);
     }
 }

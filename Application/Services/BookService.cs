@@ -14,39 +14,49 @@ namespace task_1135.Application.Services
         }
         public async Task<Book> AddAsync(CreateBookDto createBookDto)
         {
-            var book = new Book(createBookDto.Title, createBookDto.Author, createBookDto.YearPublished);
-            await _bookRepository.Add(book);
+            var book = new Book
+            {
+                Title = createBookDto.Title,
+                AuthorId = createBookDto.AuthorId,
+                YearPublished = createBookDto.YearPublished
+            };
+            await _bookRepository.AddAsync(book);
             return book;
         }
 
         public async Task<bool> DeleteAsync(int id)
         {
-            var book = await _bookRepository.GetById(id);
+            var book = await _bookRepository.GetByIdAsync(id);
             if (book == null) return false;
-            await _bookRepository.DeleteById(id);
+            await _bookRepository.DeleteByIdAsync(id);
             return true;
         }
 
         public async Task<IEnumerable<Book>> GetAllAsync()
         {
-            var books = await _bookRepository.GetAll();
+            var books = await _bookRepository.GetAllAsync();
             return books;
         }
 
         public async Task<Book?> GetByIdAsync(int id)
         {
-            var book = await _bookRepository.GetById(id);
+            var book = await _bookRepository.GetByIdAsync(id);
             return book;
         }
 
         public async Task<Book?> UpdateAsync(int id, UpdateBookDto updateBookDto)
         {
-            var book = await _bookRepository.GetById(id);
+            var book = await _bookRepository.GetByIdAsync(id);
             if (book == null) return null;
-            book.UpdateDetails(updateBookDto.Title, updateBookDto.Author, updateBookDto.YearPublished);
 
-            //ничего не делает, просто демонстрационная заглушка, поскольку обновляется ссылочное значение уже в контроллере
-            await _bookRepository.Update(book);
+            var updatedBook = new Book
+            {
+                Title = updateBookDto.Title,
+                AuthorId = updateBookDto.AuthorId,
+                YearPublished = updateBookDto.YearPublished
+            };
+
+            await _bookRepository.UpdateAsync(id, updatedBook);
 
             return book;
         }

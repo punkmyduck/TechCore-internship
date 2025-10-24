@@ -1,4 +1,4 @@
 ﻿namespace task_1135.Application.DTOs
 {
-    public record UpdateBookDto(string Title, string Author, int YearPublished);
+    public record UpdateBookDto(string Title, int AuthorId, int YearPublished);
 }
