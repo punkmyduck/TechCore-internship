@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using task_1135.Application.DTOs;
 using task_1135.Domain.Services;
 
 namespace task_1135.Presentation.Controllers
@@ -16,31 +17,35 @@ namespace task_1135.Presentation.Controllers
         [HttpGet("all")]
         public async Task<IActionResult> GetAllReviews()
         {
-            throw new NotImplementedException();
+            return Ok(await _productReviewService.GetAllAsync());
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetReviewById([FromRoute] string id)
         {
-            throw new NotImplementedException();
+            return Ok(await _productReviewService.GetByIdAsync(id));
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddReview()
+        public async Task<IActionResult> AddReview([FromBody] CreateReviewDto createReviewDto)
         {
-            throw new NotImplementedException();
+            var review = await _productReviewService.AddAsync(createReviewDto);
+            return CreatedAtAction(nameof(AddReview), new { id = review.Id }, review);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateReview([FromRoute] string id)
+        public async Task<IActionResult> UpdateReview([FromRoute] string id, [FromBody] UpdateReviewDto updateReviewDto)
         {
-            throw new NotImplementedException();
+            var review = await _productReviewService.UpdateAsync(id, updateReviewDto);
+            return Ok(review);
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteReview([FromRoute] string id)
         {
-            throw new NotImplementedException();
+            var deleted = await _productReviewService.DeleteAsync(id);
+            if (!deleted) return NotFound();
+            return NoContent();
         }
     }
 }

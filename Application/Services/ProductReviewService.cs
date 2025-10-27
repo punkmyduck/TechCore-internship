@@ -46,11 +46,9 @@ namespace task_1135.Application.Services
             return await _productReviewRepository.GetByIdAsync(id);
         }
 
-        public async Task<ProductReview?> UpdateAsync(UpdateReviewDto productReview)
+        public async Task<ProductReview?> UpdateAsync(string id, UpdateReviewDto productReview)
         {
-            if (productReview.Id == null) throw new ArgumentNullException(nameof(productReview.Id));
-
-            var review = await _productReviewRepository.GetByIdAsync(productReview.Id);
+            var review = await _productReviewRepository.GetByIdAsync(id);
             if (review == null) return null;
 
             review.Rating = productReview.Rating;
