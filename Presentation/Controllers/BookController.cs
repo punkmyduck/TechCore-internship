@@ -93,5 +93,16 @@ namespace task_1135.Presentation.Controllers
             if (!deleted) return NotFound();
             return NoContent();
         }
+
+        /// <summary>
+        /// Получить детальную информацию о книге по указанному id
+        /// </summary>
+        /// <param name="id">Идентификатор книги</param>
+        /// <returns>Информация о книге, авторах и отзывах к этой книге</returns>
+        [HttpGet("products/{id}/details")]
+        public async Task<IActionResult> GetDetails([FromRoute] int id)
+        {
+            return Ok(await _bookService.GetDetailsAsync(id));
+        }
     }
 }

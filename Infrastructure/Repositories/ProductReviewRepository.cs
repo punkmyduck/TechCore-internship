@@ -32,6 +32,11 @@ namespace task_1135.Infrastructure.Repositories
             return await _collection.Find(r => r.Id == id).FirstOrDefaultAsync();
         }
 
+        public async Task<IEnumerable<ProductReview>> GetReviewsForProductByIdAsync(string productId)
+        {
+            return await _collection.Find(r => r.ProductId == productId).ToListAsync();
+        }
+
         public async Task UpdateAsync(ProductReview productReview)
         {
             await _collection.ReplaceOneAsync(r => r.Id == productReview.Id, productReview);
