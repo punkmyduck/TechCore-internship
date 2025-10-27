@@ -1,29 +1,31 @@
 ﻿
 using System.Text.Json;
 using Microsoft.Extensions.Caching.Distributed;
+using MongoDB.Driver;
+using task_1135.Domain.Models;
 using task_1135.Domain.Repositories;
 
 namespace task_1135.Application.Services
 {
     public class AverageRatingCalculatorService : BackgroundService
     {
-        private readonly IProductReviewRepository _productReviewRepository;
+        private readonly IMongoCollection<ProductReview> _reviews;
         private readonly IDistributedCache _distributedCache;
         private readonly ILogger<AverageRatingCalculatorService> _logger;
         public AverageRatingCalculatorService(
-            IProductReviewRepository productReviewRepository,
+            IMongoClient mongoClient,
             IDistributedCache distributedCache,
             ILogger<AverageRatingCalculatorService> logger
             )
         {
-            _productReviewRepository = productReviewRepository;
+            var db = mongoClient.GetDatabase("booksdb");
+            _reviews = db.GetCollection<ProductReview>("reviews");
             _distributedCache = distributedCache;
             _logger = logger;
         }
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
             _logger.LogInformation("AverageRatingCalculatorService started");
-            
             while (!stoppingToken.IsCancellationRequested)
             {
                 try
@@ -43,7 +45,7 @@ namespace task_1135.Application.Services
 
         private async Task CalculateAndCacheAverageRatings(CancellationToken cancellationToken)
         {
-            var allReviews = await _productReviewRepository.GetAllAsync();
+            var allReviews = await _reviews.Find(_ => true).ToListAsync(cancellationToken);
             var reviewsByProduct = allReviews
                 .GroupBy(r => r.ProductId)
                 .Select(g => new { ProductId = g.Key, AverageRating = g.Average(r => r.Rating) })
@@ -62,6 +64,8 @@ namespace task_1135.Application.Services
                     }, 
                     cancellationToken);
             }
+
+            _logger.LogInformation("Average ratings calculated and cached");
         }
     }
 }

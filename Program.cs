@@ -21,6 +21,10 @@ namespace task_1135
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            builder.Logging.ClearProviders();
+            builder.Logging.AddConsole();
+            builder.Logging.AddDebug();
+
             // Add services to the container.
 
             builder.Services.AddControllers();
@@ -33,6 +37,9 @@ namespace task_1135
                 var xmlFileName = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFileName));
             });
+
+            //HostedServices configuration
+            builder.Services.AddHostedService<AverageRatingCalculatorService>();
 
             //MongoDB Configuration
             builder.Services.AddSingleton<IMongoClient>(sp =>
