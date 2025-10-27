@@ -98,7 +98,10 @@ namespace task_1135.Application.Services
                 Authors = authors
             };
 
-            await _distributedCache.SetStringAsync(cacheKey, JsonSerializer.Serialize(bookDetails));
+            await _distributedCache.SetStringAsync(
+                cacheKey,
+                JsonSerializer.Serialize(bookDetails),
+                new DistributedCacheEntryOptions { AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(1) });
 
             return bookDetails;
         }
