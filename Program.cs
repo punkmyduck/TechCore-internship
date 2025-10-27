@@ -77,6 +77,7 @@ namespace task_1135
             builder.Services.AddFluentValidationClientsideAdapters();
             builder.Services.AddValidatorsFromAssemblyContaining<CreateBookDtoFluentValidator>();
             builder.Services.AddValidatorsFromAssemblyContaining<UpdateBookDtoFluentValidator>();
+            builder.Services.AddValidatorsFromAssemblyContaining<CreateReviewDtoFluentValidator>();
 
 
             var app = builder.Build();
