@@ -1,4 +1,6 @@
-﻿using task_1135.Application.DTOs;
+﻿using System.Text.Json;
+using Microsoft.Extensions.Caching.Distributed;
+using task_1135.Application.DTOs;
 using task_1135.Domain.Models;
 using task_1135.Domain.Repositories;
 using task_1135.Domain.Services;
@@ -8,9 +10,13 @@ namespace task_1135.Application.Services
     public class BookService : IBookService
     {
         private readonly IBookRepository _bookRepository;
-        public BookService(IBookRepository bookRepository)
+        private readonly IDistributedCache _distributedCache;
+        public BookService(
+            IBookRepository bookRepository,
+            IDistributedCache distributedCache)
         {
             _bookRepository = bookRepository;
+            _distributedCache = distributedCache;
         }
         public async Task<Book> AddAsync(CreateBookDto createBookDto)
         {
@@ -28,6 +34,8 @@ namespace task_1135.Application.Services
 
         public async Task AddAuthorToBookAsync(int bookId, int authorId)
         {
+            await _distributedCache.RemoveAsync($"book:{bookId}");
+
             await _bookRepository.AddBookAuthorAsync(bookId, authorId);
             await _bookRepository.SaveChangesAsync();
         }
@@ -36,6 +44,8 @@ namespace task_1135.Application.Services
         {
             var book = await _bookRepository.GetByIdAsync(id);
             if (book == null) return false;
+
+            await _distributedCache.RemoveAsync($"book:{id}");
 
             await _bookRepository.DeleteByIdAsync(id);
             await _bookRepository.SaveChangesAsync();
@@ -51,16 +61,25 @@ namespace task_1135.Application.Services
 
         public async Task<GetBookDto?> GetByIdAsync(int id)
         {
+            string cacheKey = $"book:{id}";
+            var cached = await _distributedCache.GetStringAsync(cacheKey);
+            if (cached != null) return JsonSerializer.Deserialize<GetBookDto>(cached);
+
             var book = await _bookRepository.GetByIdAsync(id);
             if (book == null) return null;
 
-            return GetBookDto(book);
+            var bookDto = GetBookDto(book);
+
+            await _distributedCache.SetStringAsync(cacheKey, JsonSerializer.Serialize(bookDto));
+            return bookDto;
         }
 
         public async Task<GetBookDto?> UpdateAsync(int id, UpdateBookDto updateBookDto)
         {
             var book = await _bookRepository.GetByIdAsync(id);
             if (book == null) return null;
+
+            await _distributedCache.RemoveAsync($"book:{id}");
 
             var updatedBook = new Book
             {

@@ -36,7 +36,7 @@ namespace task_1135
             //Redis configuration
             builder.Services.AddStackExchangeRedisCache(options =>
             {
-                options.Configuration = "redis:6379";
+                options.Configuration = "localhost:6379";
                 options.InstanceName = "booksapp_";
             });
 
