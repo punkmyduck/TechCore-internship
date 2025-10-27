@@ -2,6 +2,7 @@ using System.Reflection;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.EntityFrameworkCore;
+using MongoDB.Driver;
 using task_1135.Application.Services;
 using task_1135.Application.Settings;
 using task_1135.Application.Validators;
@@ -33,6 +34,10 @@ namespace task_1135
                 options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFileName));
             });
 
+            //MongoDB Configuration
+            builder.Services.AddSingleton<IMongoClient>(sp =>
+                new MongoClient("mongodb://localhost:27017"));
+
             //Redis configuration
             builder.Services.AddStackExchangeRedisCache(options =>
             {
@@ -60,17 +65,20 @@ namespace task_1135
             builder.Services.AddSingleton<ILogService, ConsoleLogService>();
             builder.Services.AddScoped<IAuthorService, AuthorService>();
             builder.Services.AddScoped<IReportService, ReportService>();
+            builder.Services.AddScoped<IProductReviewService, ProductReviewService>();
 
             // Register infrastructure services
             builder.Services.AddSingleton<BookStorage>();
             builder.Services.AddScoped<IBookRepository, DatabaseBookRepository>();
             builder.Services.AddScoped<IAuthorRepository, DatabaseAuthorRepository>();
+            builder.Services.AddScoped<IProductReviewRepository, ProductReviewRepository>();
 
             //Register fluent validators
             builder.Services.AddFluentValidationAutoValidation();
             builder.Services.AddFluentValidationClientsideAdapters();
             builder.Services.AddValidatorsFromAssemblyContaining<CreateBookDtoFluentValidator>();
             builder.Services.AddValidatorsFromAssemblyContaining<UpdateBookDtoFluentValidator>();
+            builder.Services.AddValidatorsFromAssemblyContaining<CreateReviewDtoFluentValidator>();
 
 
             var app = builder.Build();

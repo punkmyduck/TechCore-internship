@@ -52,7 +52,7 @@ namespace task_1135.Presentation.Controllers
         public async Task<IActionResult> AddBook([FromBody] CreateBookDto createBookDto)
         {
             var book = await _bookService.AddAsync(createBookDto);
-            return CreatedAtAction(nameof(GetBookById), new {id = book.Id}, book);
+            return CreatedAtAction(nameof(AddBook), new {id = book.Id}, book);
         }
 
         /// <summary>
