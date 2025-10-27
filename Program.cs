@@ -2,6 +2,7 @@ using System.Reflection;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.EntityFrameworkCore;
+using MongoDB.Driver;
 using task_1135.Application.Services;
 using task_1135.Application.Settings;
 using task_1135.Application.Validators;
@@ -32,6 +33,10 @@ namespace task_1135
                 var xmlFileName = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFileName));
             });
+
+            //MongoDB Configuration
+            builder.Services.AddSingleton<IMongoClient>(sp =>
+                new MongoClient("mongodb://localhost:27017"));
 
             //Redis configuration
             builder.Services.AddStackExchangeRedisCache(options =>
