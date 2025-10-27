@@ -33,6 +33,13 @@ namespace task_1135
                 options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFileName));
             });
 
+            //Redis configuration
+            builder.Services.AddStackExchangeRedisCache(options =>
+            {
+                options.Configuration = "redis:6379";
+                options.InstanceName = "booksapp_";
+            });
+
             //Database configuration
             builder.Services.AddDbContext<BookContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
