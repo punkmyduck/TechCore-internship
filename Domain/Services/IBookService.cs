@@ -6,9 +6,9 @@ namespace task_1135.Domain.Services
     public interface IBookService
     {
         Task<IEnumerable<Book>> GetAllAsync();
-        Task<GetBookDto?> GetByIdAsync(int id);
+        Task<ReturnBookDto?> GetByIdAsync(int id);
         Task<Book> AddAsync(CreateBookDto createBookDto);
-        Task<GetBookDto?> UpdateAsync(int id, UpdateBookDto updateBookDto);
+        Task<ReturnBookDto?> UpdateAsync(int id, UpdateBookDto updateBookDto);
         Task<bool> DeleteAsync(int id);
         Task AddAuthorToBookAsync(int bookId, int authorId);
         Task<ProductDetailsDto> GetDetailsAsync(int id);
