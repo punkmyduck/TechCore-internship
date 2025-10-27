@@ -70,6 +70,7 @@ namespace task_1135
             builder.Services.AddSingleton<BookStorage>();
             builder.Services.AddScoped<IBookRepository, DatabaseBookRepository>();
             builder.Services.AddScoped<IAuthorRepository, DatabaseAuthorRepository>();
+            builder.Services.AddScoped<IProductReviewRepository, ProductReviewRepository>();
 
             //Register fluent validators
             builder.Services.AddFluentValidationAutoValidation();
