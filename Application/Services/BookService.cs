@@ -10,13 +10,16 @@ namespace task_1135.Application.Services
     public class BookService : IBookService
     {
         private readonly IBookRepository _bookRepository;
+        private readonly IProductReviewRepository _productReviewRepository;
         private readonly IDistributedCache _distributedCache;
         public BookService(
             IBookRepository bookRepository,
-            IDistributedCache distributedCache)
+            IDistributedCache distributedCache,
+            IProductReviewRepository productReviewRepository)
         {
             _bookRepository = bookRepository;
             _distributedCache = distributedCache;
+            _productReviewRepository = productReviewRepository;
         }
         public async Task<Book> AddAsync(CreateBookDto createBookDto)
         {
@@ -45,7 +48,7 @@ namespace task_1135.Application.Services
             var book = await _bookRepository.GetByIdAsync(id);
             if (book == null) return false;
 
-            await _distributedCache.RemoveAsync($"book:{id}");
+            await ClearCache(id);
 
             await _bookRepository.DeleteByIdAsync(id);
             await _bookRepository.SaveChangesAsync();
@@ -74,12 +77,38 @@ namespace task_1135.Application.Services
             return bookDto;
         }
 
+        public async Task<ProductDetailsDto> GetDetailsAsync(int id)
+        {
+            string cacheKey = $"bookdetails:{id}";
+            var cached = await _distributedCache.GetStringAsync(cacheKey);
+            if (cached != null) return JsonSerializer.Deserialize<ProductDetailsDto>(cached)!;
+
+            var book = await _bookRepository.GetByIdAsync(id);
+            if (book == null) throw new KeyNotFoundException($"Book with id = {id} not found");
+
+            var reviews = await _productReviewRepository.GetReviewsForProductByIdAsync(id.ToString());
+            var authors = GetAuthorsShortDto(book);
+
+            var bookDetails = new ProductDetailsDto
+            {
+                Id = book.Id,
+                Title = book.Title,
+                YearPublished = book.YearPublished,
+                Reviews = reviews.ToList(),
+                Authors = authors
+            };
+
+            await _distributedCache.SetStringAsync(cacheKey, JsonSerializer.Serialize(bookDetails));
+
+            return bookDetails;
+        }
+
         public async Task<GetBookDto?> UpdateAsync(int id, UpdateBookDto updateBookDto)
         {
             var book = await _bookRepository.GetByIdAsync(id);
             if (book == null) return null;
 
-            await _distributedCache.RemoveAsync($"book:{id}");
+            await ClearCache(id);
 
             var updatedBook = new Book
             {
@@ -93,6 +122,12 @@ namespace task_1135.Application.Services
             return GetBookDto(book);
         }
 
+        private async Task ClearCache(int id)
+        {
+            await _distributedCache.RemoveAsync($"book:{id}");
+            await _distributedCache.RemoveAsync($"bookdetails:{id}");
+        }
+
         private GetBookDto GetBookDto(Book book)
         {
             return new GetBookDto
@@ -100,12 +135,17 @@ namespace task_1135.Application.Services
                 Id = book.Id,
                 Title = book.Title,
                 YearPublished = book.YearPublished,
-                Authors = book.Authors.Select(a => new GetAuthorShortDto
-                {
-                    Id = a.Id,
-                    Name = a.Name,
-                }).ToList()
+                Authors = GetAuthorsShortDto(book)
             };
+        }
+
+        private List<GetAuthorShortDto> GetAuthorsShortDto(Book book)
+        {
+            return book.Authors.Select(a => new GetAuthorShortDto
+            {
+                Id = a.Id,
+                Name = a.Name,
+            }).ToList();
         }
     }
 }
