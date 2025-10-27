@@ -11,5 +11,6 @@ namespace task_1135.Domain.Services
         Task<GetBookDto?> UpdateAsync(int id, UpdateBookDto updateBookDto);
         Task<bool> DeleteAsync(int id);
         Task AddAuthorToBookAsync(int bookId, int authorId);
+        Task<ProductDetailsDto> GetDetailsAsync(int id);
     }
 }

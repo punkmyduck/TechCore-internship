@@ -102,7 +102,7 @@ namespace task_1135.Presentation.Controllers
         [HttpGet("products/{id}/details")]
         public async Task<IActionResult> GetDetails([FromRoute] int id)
         {
-
+            return Ok(await _bookService.GetDetailsAsync(id));
         }
     }
 }
