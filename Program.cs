@@ -69,7 +69,6 @@ namespace task_1135
             // Register application services
             builder.Services.AddScoped<ITimeService, TimeService>();
             builder.Services.AddScoped<IBookService, BookService>();
-            builder.Services.AddSingleton<ILogService, ConsoleLogService>();
             builder.Services.AddScoped<IAuthorService, AuthorService>();
             builder.Services.AddScoped<IReportService, ReportService>();
             builder.Services.AddScoped<IProductReviewService, ProductReviewService>();

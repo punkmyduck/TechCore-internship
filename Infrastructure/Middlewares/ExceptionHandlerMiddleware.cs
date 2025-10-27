@@ -6,13 +6,13 @@ namespace task_1135.Infrastructure.Middlewares
     public class ExceptionHandlerMiddleware
     {
         private readonly RequestDelegate _next;
-        private readonly ILogService _logService;
+        private readonly ILogger<ExceptionHandlerMiddleware> _logger;
         public ExceptionHandlerMiddleware(
             RequestDelegate next,
-            ILogService logService)
+            ILogger<ExceptionHandlerMiddleware> logService)
         {
             _next = next;
-            _logService = logService;
+            _logger = logService;
         }
         public async Task InvokeAsync(HttpContext context)
         {
@@ -33,7 +33,7 @@ namespace task_1135.Infrastructure.Middlewares
                     Instance = context.Request.Path
                 };
 
-                _logService.Log(ex.Message + "\n" + ex.Source + "\n" + ex.StackTrace + "\n" + ex.InnerException);
+                _logger.LogError(ex.Message + "\n" + ex.Source + "\n" + ex.StackTrace + "\n" + ex.InnerException);
                 await context.Response.WriteAsJsonAsync(problem);
             }
         }
