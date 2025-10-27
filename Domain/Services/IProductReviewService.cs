@@ -7,8 +7,8 @@ namespace task_1135.Domain.Services
     {
         Task<IEnumerable<ProductReview>> GetAllAsync();
         Task<ProductReview?> GetByIdAsync(string id);
-        Task AddAsync(CreateReviewDto productReview);
-        Task UpdateAsync(UpdateReviewDto productReview);
-        Task DeleteAsync(string id);
+        Task<ProductReview> AddAsync(CreateReviewDto productReview);
+        Task<ProductReview?> UpdateAsync(UpdateReviewDto productReview);
+        Task<bool> DeleteAsync(string id);
     }
 }
