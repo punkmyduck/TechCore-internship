@@ -40,6 +40,13 @@ namespace task_1135
                 options.InstanceName = "booksapp_";
             });
 
+            //OutputCache configuration
+            builder.Services.AddOutputCache(options =>
+            {
+                options.AddPolicy("BookPolicy", policy =>
+                policy.Cache().Expire(TimeSpan.FromSeconds(60)));
+            });
+
             //Database configuration
             builder.Services.AddDbContext<BookContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
@@ -81,6 +88,7 @@ namespace task_1135
 
             app.UseMiddleware<TimingMiddleware>();
             app.UseMiddleware<ExceptionHandlerMiddleware>();
+            app.UseOutputCache();
 
             app.MapControllers();
 

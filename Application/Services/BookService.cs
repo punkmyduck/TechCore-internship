@@ -61,6 +61,7 @@ namespace task_1135.Application.Services
 
         public async Task<GetBookDto?> GetByIdAsync(int id)
         {
+            Console.WriteLine("Somethinggdfglksdfgkj sdfgkjl nsdfkljg nsdfkljgn sd");
             string cacheKey = $"book:{id}";
             var cached = await _distributedCache.GetStringAsync(cacheKey);
             if (cached != null) return JsonSerializer.Deserialize<GetBookDto>(cached);

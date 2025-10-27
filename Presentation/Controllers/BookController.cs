@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.OutputCaching;
 using task_1135.Application.DTOs;
 using task_1135.Domain.Models;
 using task_1135.Domain.Repositories;
@@ -34,6 +35,7 @@ namespace task_1135.Presentation.Controllers
         /// <param name="id">Идентификатор книги</param>
         /// <returns>Книга с указанным id или NotFound() если книги с указанным id не существует</returns>
         [HttpGet("{id}")]
+        [OutputCache(PolicyName = "BookPolicy")]
         public async Task<IActionResult> GetBookById([FromRoute] int id)
         {
             var book = await _bookService.GetByIdAsync(id);
