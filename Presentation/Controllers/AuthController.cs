@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using task_1135.Application.DTOs;
+using task_1135.Domain.Models;
 using task_1135.Domain.Services;
 
 namespace task_1135.Presentation.Controllers
@@ -9,14 +10,14 @@ namespace task_1135.Presentation.Controllers
     [Route("[controller]")]
     public class AuthController : ControllerBase
     {
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly UserManager<ApplicationIdentityUser> _userManager;
+        private readonly SignInManager<ApplicationIdentityUser> _signInManager;
         private readonly ILogger<AuthController> _logger;
         private readonly IJwtService _jwtService;
         public AuthController(
-            UserManager<IdentityUser> userManager, 
+            UserManager<ApplicationIdentityUser> userManager, 
             ILogger<AuthController> logger,
-            SignInManager<IdentityUser> signInManager,
+            SignInManager<ApplicationIdentityUser> signInManager,
             IJwtService jwtService)
         {
             _userManager = userManager;
@@ -28,7 +29,7 @@ namespace task_1135.Presentation.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] RegisterUserDto registerUserDto)
         {
-            var user = new IdentityUser { UserName = registerUserDto.UserName };
+            var user = new ApplicationIdentityUser { UserName = registerUserDto.UserName, DateOfBirth = registerUserDto.DateOfBirth };
             var result = await _userManager.CreateAsync(user, registerUserDto.Password);
 
             if (result.Succeeded)
@@ -44,7 +45,7 @@ namespace task_1135.Presentation.Controllers
         [HttpPost("register/admin")]
         public async Task<IActionResult> RegisterAdmin([FromBody] RegisterUserDto registerUserDto)
         {
-            var user = new IdentityUser { UserName = registerUserDto.UserName };
+            var user = new ApplicationIdentityUser { UserName = registerUserDto.UserName, DateOfBirth = registerUserDto.DateOfBirth };
             var result = await _userManager.CreateAsync(user, registerUserDto.Password);
 
             if (result.Succeeded)

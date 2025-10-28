@@ -4,7 +4,7 @@ using task_1135.Domain.Models;
 
 namespace task_1135.Infrastructure
 {
-    public class BookContext : IdentityDbContext
+    public class BookContext : IdentityDbContext<ApplicationIdentityUser>
     {
         public DbSet<Book> Books => Set<Book>();
         public DbSet<Author> Authors => Set<Author>();
