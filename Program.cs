@@ -79,6 +79,7 @@ namespace task_1135
             builder.Services.AddScoped<IAuthorService, AuthorService>();
             builder.Services.AddScoped<IReportService, ReportService>();
             builder.Services.AddScoped<IProductReviewService, ProductReviewService>();
+            builder.Services.AddScoped<IJwtService, JwtService>();
 
             // Register infrastructure services
             builder.Services.AddSingleton<BookStorage>();

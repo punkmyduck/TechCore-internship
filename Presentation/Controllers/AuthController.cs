@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using task_1135.Application.DTOs;
+using task_1135.Domain.Services;
 
 namespace task_1135.Presentation.Controllers
 {
@@ -11,14 +12,17 @@ namespace task_1135.Presentation.Controllers
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly ILogger<AuthController> _logger;
+        private readonly IJwtService _jwtService;
         public AuthController(
             UserManager<IdentityUser> userManager, 
             ILogger<AuthController> logger,
-            SignInManager<IdentityUser> signInManager)
+            SignInManager<IdentityUser> signInManager,
+            IJwtService jwtService)
         {
             _userManager = userManager;
             _logger = logger;
             _signInManager = signInManager;
+            _jwtService = jwtService;
         }
 
         [HttpPost("register")]
@@ -53,7 +57,8 @@ namespace task_1135.Presentation.Controllers
             if (result.Succeeded)
             {
                 _logger.LogInformation($"User {{{user.UserName}}} logged in successfully");
-                return Ok(new { Message = "Success" });
+                var token = _jwtService.GenerateToken(user);
+                return Ok(new { access_token = token });
             }
 
             _logger.LogInformation($"Failed login attempt\n\tUsername : {{{user.UserName}}}");
