@@ -1,6 +1,7 @@
 using System.Reflection;
 using FluentValidation;
 using FluentValidation.AspNetCore;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using MongoDB.Driver;
 using task_1135.Application.Services;
@@ -61,6 +62,9 @@ namespace task_1135
 
             //Database configuration
             builder.Services.AddDbContext<BookContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+            builder.Services.AddIdentity<IdentityUser, IdentityRole>()
+                .AddEntityFrameworkStores<BookContext>()
+                .AddDefaultTokenProviders();
 
             //Appsettings configuration
             builder.Services.Configure<MySettings>(builder.Configuration.GetSection("MySettings"));
