@@ -1,29 +1,12 @@
-using System.Reflection;
-using System.Text;
-using FluentValidation;
-using FluentValidation.AspNetCore;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi.Models;
-using MongoDB.Driver;
 using task_1135.Application.Services;
-using task_1135.Application.Settings;
-using task_1135.Application.Validators;
-using task_1135.Domain.Repositories;
-using task_1135.Domain.Services;
 using task_1135.Extensions;
-using task_1135.Infrastructure;
 using task_1135.Infrastructure.Middlewares;
-using task_1135.Infrastructure.Repositories;
-using task_1135.Infrastructure.Storage;
 
 namespace task_1135
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
@@ -32,7 +15,7 @@ namespace task_1135
             builder.Logging.AddDebug();
 
             // Add services to the container.
-            builder.Services.AddAuthorization();
+            builder.Services.AddAuthorizationWithPolicy();
             builder.Services.AddControllers();
             builder.Services.AddHealthChecks();
 
@@ -71,6 +54,11 @@ namespace task_1135
             {
                 app.UseSwagger();
                 app.UseSwaggerUI();
+            }
+
+            using (var scope = app.Services.CreateScope())
+            {
+                await scope.ServiceProvider.CreateRoleAsync("Admin");
             }
 
             app.UseHttpsRedirection();
