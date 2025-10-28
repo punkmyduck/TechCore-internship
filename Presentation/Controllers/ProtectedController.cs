@@ -14,6 +14,10 @@ namespace task_1135.Presentation.Controllers
             
         }
 
+        /// <summary>
+        /// Получить доступ к сервису, который защищен политикой "OlderThan18"
+        /// </summary>
+        /// <returns>Ok, если пользователю больше 18 лет</returns>
         [HttpGet("restricted")]
         [Authorize(Policy = "OlderThan18")]
         public async Task<IActionResult> GetRestrictedContent()
@@ -21,6 +25,10 @@ namespace task_1135.Presentation.Controllers
             return Ok(new { Message = "Access granted : older than 18" });
         }
 
+        /// <summary>
+        /// Получить информацию о текущем пользователе
+        /// </summary>
+        /// <returns>Id и Username текущего пользователя</returns>
         [HttpGet("me")]
         [Authorize]
         public async Task<IActionResult> GetCurrentUser()
