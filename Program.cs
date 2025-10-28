@@ -1,8 +1,11 @@
 using System.Reflection;
+using System.Text;
 using FluentValidation;
 using FluentValidation.AspNetCore;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using MongoDB.Driver;
 using task_1135.Application.Services;
 using task_1135.Application.Settings;
@@ -27,7 +30,7 @@ namespace task_1135
             builder.Logging.AddDebug();
 
             // Add services to the container.
-
+            builder.Services.AddAuthorization();
             builder.Services.AddControllers();
             builder.Services.AddHealthChecks();
 
@@ -90,6 +93,28 @@ namespace task_1135
             builder.Services.AddValidatorsFromAssemblyContaining<UpdateBookDtoFluentValidator>();
             builder.Services.AddValidatorsFromAssemblyContaining<CreateReviewDtoFluentValidator>();
 
+            //JWT configuration
+            var jwtSettings = builder.Configuration.GetSection("Jwt");
+            var key = Encoding.UTF8.GetBytes(jwtSettings["SecretKey"]!);
+
+            builder.Services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+                .AddJwtBearer(options =>
+                {
+                    options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+                    {
+                        ValidateIssuer = true,
+                        ValidateAudience = true,
+                        ValidateLifetime = true,
+                        ValidateIssuerSigningKey = true,
+                        ValidIssuer = jwtSettings["Issuer"],
+                        ValidAudience = jwtSettings["Audience"],
+                        IssuerSigningKey = new SymmetricSecurityKey(key)
+                    };
+                });
 
             var app = builder.Build();
 
