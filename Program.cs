@@ -13,6 +13,7 @@ using task_1135.Application.Settings;
 using task_1135.Application.Validators;
 using task_1135.Domain.Repositories;
 using task_1135.Domain.Services;
+using task_1135.Extensions;
 using task_1135.Infrastructure;
 using task_1135.Infrastructure.Middlewares;
 using task_1135.Infrastructure.Repositories;
@@ -36,50 +37,13 @@ namespace task_1135
             builder.Services.AddHealthChecks();
 
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-            builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen(options =>
-            {
-                var xmlFileName = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-                options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFileName));
-                options.AddSecurityDefinition("Bearer", new Microsoft.OpenApi.Models.OpenApiSecurityScheme
-                {
-                    Name = "Authorization",
-                    Type = Microsoft.OpenApi.Models.SecuritySchemeType.Http,
-                    Scheme = "Bearer",
-                    BearerFormat = "JWT",
-                    In = Microsoft.OpenApi.Models.ParameterLocation.Header,
-                    Description = "Enter token here: Bearer {token}"
-                });
-
-                options.AddSecurityRequirement(new Microsoft.OpenApi.Models.OpenApiSecurityRequirement
-                {
-                    {
-                        new OpenApiSecurityScheme
-                        {
-                            Reference = new OpenApiReference
-                            {
-                                Type = ReferenceType.SecurityScheme,
-                                Id = "Bearer"
-                            }
-                        },
-                        Array.Empty<string>()
-                    }
-                });
-            });
+            builder.Services.AddSwaggerUI();
 
             //HostedServices configuration
             builder.Services.AddHostedService<AverageRatingCalculatorService>();
 
-            //MongoDB Configuration
-            builder.Services.AddSingleton<IMongoClient>(sp =>
-                new MongoClient("mongodb://localhost:27017"));
-
-            //Redis configuration
-            builder.Services.AddStackExchangeRedisCache(options =>
-            {
-                options.Configuration = "localhost:6379";
-                options.InstanceName = "booksapp_";
-            });
+            //NoSQL configuration
+            builder.Services.AddNoSqlServices();
 
             //OutputCache configuration
             builder.Services.AddOutputCache(options =>
@@ -89,58 +53,16 @@ namespace task_1135
             });
 
             //Database configuration
-            builder.Services.AddDbContext<BookContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
-            builder.Services.AddIdentity<IdentityUser, IdentityRole>()
-                .AddEntityFrameworkStores<BookContext>()
-                .AddDefaultTokenProviders();
+            builder.AddDatabaseConfiguration();
 
             //Appsettings configuration
-            builder.Services.Configure<MySettings>(builder.Configuration.GetSection("MySettings"));
-            builder.Services.Configure<AsyncSettings>(builder.Configuration.GetSection("AsyncSettings"));
+            builder.AddAppSettingsConfiguration();
 
             // Register application services
-            builder.Services.AddScoped<ITimeService, TimeService>();
-            builder.Services.AddScoped<IBookService, BookService>();
-            builder.Services.AddScoped<IAuthorService, AuthorService>();
-            builder.Services.AddScoped<IReportService, ReportService>();
-            builder.Services.AddScoped<IProductReviewService, ProductReviewService>();
-            builder.Services.AddScoped<IJwtService, JwtService>();
-
-            // Register infrastructure services
-            builder.Services.AddSingleton<BookStorage>();
-            builder.Services.AddScoped<IBookRepository, DatabaseBookRepository>();
-            builder.Services.AddScoped<IAuthorRepository, DatabaseAuthorRepository>();
-            builder.Services.AddScoped<IProductReviewRepository, ProductReviewRepository>();
-
-            //Register fluent validators
-            builder.Services.AddFluentValidationAutoValidation();
-            builder.Services.AddFluentValidationClientsideAdapters();
-            builder.Services.AddValidatorsFromAssemblyContaining<CreateBookDtoFluentValidator>();
-            builder.Services.AddValidatorsFromAssemblyContaining<UpdateBookDtoFluentValidator>();
-            builder.Services.AddValidatorsFromAssemblyContaining<CreateReviewDtoFluentValidator>();
+            builder.Services.AddApplicationServices();
 
             //JWT configuration
-            var jwtSettings = builder.Configuration.GetSection("Jwt");
-            var key = Encoding.UTF8.GetBytes(jwtSettings["SecretKey"]!);
-
-            builder.Services.AddAuthentication(options =>
-            {
-                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            })
-                .AddJwtBearer(options =>
-                {
-                    options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
-                    {
-                        ValidateIssuer = true,
-                        ValidateAudience = true,
-                        ValidateLifetime = true,
-                        ValidateIssuerSigningKey = true,
-                        ValidIssuer = jwtSettings["Issuer"],
-                        ValidAudience = jwtSettings["Audience"],
-                        IssuerSigningKey = new SymmetricSecurityKey(key)
-                    };
-                });
+            builder.AddJwtAuthentication();
 
             var app = builder.Build();
 
