@@ -128,6 +128,7 @@ namespace task_1135
 
             app.UseHttpsRedirection();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseMiddleware<TimingMiddleware>();
