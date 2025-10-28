@@ -79,20 +79,20 @@ namespace task_1135.Application.Services
 
         public async Task<ProductDetailsDto> GetDetailsAsync(int id)
         {
-            ReturnBookDto getBookDto;
+            ReturnBookDto bookDto;
 
             string cacheKey = $"book:{id}";
             var cached = await _distributedCache.GetStringAsync(cacheKey);
-            if (cached != null) getBookDto = JsonSerializer.Deserialize<ReturnBookDto>(cached)!;
+            if (cached != null) bookDto = JsonSerializer.Deserialize<ReturnBookDto>(cached)!;
             else
             {
                 var book = await _bookRepository.GetByIdAsync(id);
                 if (book == null) throw new KeyNotFoundException($"Book with id = {id} not found");
-                getBookDto = GetReturnBookDto(book);
+                bookDto = GetReturnBookDto(book);
 
                 await _distributedCache.SetStringAsync(
                     cacheKey,
-                    JsonSerializer.Serialize(getBookDto),
+                    JsonSerializer.Serialize(bookDto),
                     new DistributedCacheEntryOptions 
                     { 
                         AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(1) 
@@ -107,12 +107,12 @@ namespace task_1135.Application.Services
 
             var bookDetails = new ProductDetailsDto
             {
-                Id = getBookDto.Id,
-                Title = getBookDto.Title,
-                YearPublished = getBookDto.YearPublished,
+                Id = bookDto.Id,
+                Title = bookDto.Title,
+                YearPublished = bookDto.YearPublished,
                 AverageProductRating = averageRating,
                 Reviews = reviews.ToList(),
-                Authors = getBookDto.Authors
+                Authors = bookDto.Authors
             };
 
             return bookDetails;
