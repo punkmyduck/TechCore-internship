@@ -86,6 +86,7 @@ namespace task_1135.Presentation.Controllers
         /// <param name="id">Идентификатор книги</param>
         /// <returns>NotFound если книги с указанным id не существует или NoContent, если книга успешно удалена</returns>
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteBook([FromRoute] int id)
         {
             var deleted = await _bookService.DeleteAsync(id);

@@ -26,10 +26,10 @@ namespace task_1135.Presentation.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<IActionResult> Register([FromBody] RegisterUserDto createUserDto)
+        public async Task<IActionResult> Register([FromBody] RegisterUserDto registerUserDto)
         {
-            var user = new IdentityUser { UserName = createUserDto.UserName };
-            var result = await _userManager.CreateAsync(user, createUserDto.Password);
+            var user = new IdentityUser { UserName = registerUserDto.UserName };
+            var result = await _userManager.CreateAsync(user, registerUserDto.Password);
 
             if (result.Succeeded)
             {
@@ -38,6 +38,23 @@ namespace task_1135.Presentation.Controllers
             }
 
             _logger.LogInformation($"user registration incorrect\n\terrors : {{{string.Join("}, {", result.Errors.Select(a => a.Description))}}}");
+            return BadRequest(result.Errors);
+        }
+
+        [HttpPost("register/admin")]
+        public async Task<IActionResult> RegisterAdmin([FromBody] RegisterUserDto registerUserDto)
+        {
+            var user = new IdentityUser { UserName = registerUserDto.UserName };
+            var result = await _userManager.CreateAsync(user, registerUserDto.Password);
+
+            if (result.Succeeded)
+            {
+                await _userManager.AddToRoleAsync(user, "Admin");
+                _logger.LogInformation($"user with role \"Admin\" registered successfully\n\tusername : {{{user.UserName}}}\n\tpassword hash : {{{user.PasswordHash}}}");
+                return Ok(new { Message = "User with role \"Admin\" registered successfully" });
+            }
+
+            _logger.LogInformation($"user with role \"Admin\" registration incorrect\n\terrors : {{{string.Join("}, {", result.Errors.Select(a => a.Description))}}}");
             return BadRequest(result.Errors);
         }
 
