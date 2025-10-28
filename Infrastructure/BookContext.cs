@@ -1,9 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using task_1135.Domain.Models;
 
 namespace task_1135.Infrastructure
 {
-    public class BookContext : DbContext
+    public class BookContext : IdentityDbContext
     {
         public DbSet<Book> Books => Set<Book>();
         public DbSet<Author> Authors => Set<Author>();

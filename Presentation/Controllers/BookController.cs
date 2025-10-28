@@ -1,15 +1,14 @@
-﻿using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OutputCaching;
 using task_1135.Application.DTOs;
-using task_1135.Domain.Models;
-using task_1135.Domain.Repositories;
 using task_1135.Domain.Services;
 
 namespace task_1135.Presentation.Controllers
 {
     [ApiController]
     [Route("[controller]")]
+    [Authorize]
     public class BookController : ControllerBase
     {
         private readonly IBookService _bookService;

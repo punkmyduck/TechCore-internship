@@ -1,7 +1,12 @@
 using System.Reflection;
+using System.Text;
 using FluentValidation;
 using FluentValidation.AspNetCore;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using MongoDB.Driver;
 using task_1135.Application.Services;
 using task_1135.Application.Settings;
@@ -26,7 +31,7 @@ namespace task_1135
             builder.Logging.AddDebug();
 
             // Add services to the container.
-
+            builder.Services.AddAuthorization();
             builder.Services.AddControllers();
             builder.Services.AddHealthChecks();
 
@@ -36,6 +41,30 @@ namespace task_1135
             {
                 var xmlFileName = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFileName));
+                options.AddSecurityDefinition("Bearer", new Microsoft.OpenApi.Models.OpenApiSecurityScheme
+                {
+                    Name = "Authorization",
+                    Type = Microsoft.OpenApi.Models.SecuritySchemeType.Http,
+                    Scheme = "Bearer",
+                    BearerFormat = "JWT",
+                    In = Microsoft.OpenApi.Models.ParameterLocation.Header,
+                    Description = "Enter token here: Bearer {token}"
+                });
+
+                options.AddSecurityRequirement(new Microsoft.OpenApi.Models.OpenApiSecurityRequirement
+                {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference
+                            {
+                                Type = ReferenceType.SecurityScheme,
+                                Id = "Bearer"
+                            }
+                        },
+                        Array.Empty<string>()
+                    }
+                });
             });
 
             //HostedServices configuration
@@ -61,6 +90,9 @@ namespace task_1135
 
             //Database configuration
             builder.Services.AddDbContext<BookContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+            builder.Services.AddIdentity<IdentityUser, IdentityRole>()
+                .AddEntityFrameworkStores<BookContext>()
+                .AddDefaultTokenProviders();
 
             //Appsettings configuration
             builder.Services.Configure<MySettings>(builder.Configuration.GetSection("MySettings"));
@@ -72,6 +104,7 @@ namespace task_1135
             builder.Services.AddScoped<IAuthorService, AuthorService>();
             builder.Services.AddScoped<IReportService, ReportService>();
             builder.Services.AddScoped<IProductReviewService, ProductReviewService>();
+            builder.Services.AddScoped<IJwtService, JwtService>();
 
             // Register infrastructure services
             builder.Services.AddSingleton<BookStorage>();
@@ -86,6 +119,28 @@ namespace task_1135
             builder.Services.AddValidatorsFromAssemblyContaining<UpdateBookDtoFluentValidator>();
             builder.Services.AddValidatorsFromAssemblyContaining<CreateReviewDtoFluentValidator>();
 
+            //JWT configuration
+            var jwtSettings = builder.Configuration.GetSection("Jwt");
+            var key = Encoding.UTF8.GetBytes(jwtSettings["SecretKey"]!);
+
+            builder.Services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+                .AddJwtBearer(options =>
+                {
+                    options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+                    {
+                        ValidateIssuer = true,
+                        ValidateAudience = true,
+                        ValidateLifetime = true,
+                        ValidateIssuerSigningKey = true,
+                        ValidIssuer = jwtSettings["Issuer"],
+                        ValidAudience = jwtSettings["Audience"],
+                        IssuerSigningKey = new SymmetricSecurityKey(key)
+                    };
+                });
 
             var app = builder.Build();
 
@@ -98,6 +153,7 @@ namespace task_1135
 
             app.UseHttpsRedirection();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseMiddleware<TimingMiddleware>();
