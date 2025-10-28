@@ -4,6 +4,6 @@ namespace task_1135.Domain.Services
 {
     public interface IJwtService
     {
-        string GenerateToken(IdentityUser user);
+        Task<string> GenerateTokenAsync(IdentityUser user);
     }
 }

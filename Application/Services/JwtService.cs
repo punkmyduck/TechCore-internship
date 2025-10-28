@@ -5,26 +5,32 @@ using System.Text;
 using System.Security.Claims;
 using System.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
+using System.Threading.Tasks;
 
 namespace task_1135.Application.Services
 {
     public class JwtService : IJwtService
     {
         private readonly IConfigurationSection _jwtOptions;
-        public JwtService(IConfiguration config)
+        private readonly UserManager<IdentityUser> _userManager;
+        public JwtService(
+            IConfiguration config,
+            UserManager<IdentityUser> userManager)
         {
             _jwtOptions = config.GetSection("Jwt");
+            _userManager = userManager;
         }
-        public string GenerateToken(IdentityUser user)
+        public async Task<string> GenerateTokenAsync(IdentityUser user)
         {
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtOptions["SecretKey"]!));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
-            var claims = new[]
+            var claims = new List<Claim>
             {
                 new Claim(JwtRegisteredClaimNames.Sub, user.Id),
                 new Claim(JwtRegisteredClaimNames.UniqueName, user.UserName!)
             };
+            claims.AddRange((await _userManager.GetRolesAsync(user)).Select(r => new Claim(ClaimTypes.Role, r)));
 
             var token = new JwtSecurityToken(
                 issuer: _jwtOptions["Issuer"],

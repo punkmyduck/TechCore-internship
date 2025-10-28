@@ -74,7 +74,7 @@ namespace task_1135.Presentation.Controllers
             if (result.Succeeded)
             {
                 _logger.LogInformation($"User {{{user.UserName}}} logged in successfully");
-                var token = _jwtService.GenerateToken(user);
+                var token = _jwtService.GenerateTokenAsync(user);
                 return Ok(new { access_token = token });
             }
 
