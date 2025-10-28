@@ -26,6 +26,11 @@ namespace task_1135.Presentation.Controllers
             _jwtService = jwtService;
         }
 
+        /// <summary>
+        /// Зарегистрировать пользователя
+        /// </summary>
+        /// <param name="registerUserDto">Класс с атрибутами для регистрации</param>
+        /// <returns>Ok в случае успеха, BadRequest с информацией об ошибках в случае неудачи</returns>
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] RegisterUserDto registerUserDto)
         {
@@ -42,6 +47,11 @@ namespace task_1135.Presentation.Controllers
             return BadRequest(result.Errors);
         }
 
+        /// <summary>
+        /// Зарегистрировать пользователя с ролью "Admin"
+        /// </summary>
+        /// <param name="registerUserDto">Класс с атрибутами для регистрации</param>
+        /// <returns>Ok в случае успеха, BadRequest с информацией об ошибках в случае неудачи</returns>
         [HttpPost("register/admin")]
         public async Task<IActionResult> RegisterAdmin([FromBody] RegisterUserDto registerUserDto)
         {
@@ -59,6 +69,11 @@ namespace task_1135.Presentation.Controllers
             return BadRequest(result.Errors);
         }
 
+        /// <summary>
+        /// Залогиниться в сервис
+        /// </summary>
+        /// <param name="signInDto">Класс с атрибутами для входа</param>
+        /// <returns>Ok в случае успеха, BadRequest, если попытка входа неудачна</returns>
         [HttpPost("login")]
         public async Task<IActionResult> SignIn([FromBody] SignInDto signInDto)
         {
