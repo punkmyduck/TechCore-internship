@@ -19,7 +19,7 @@ namespace task_1135.Extensions
             services.AddScoped<IReportService, ReportService>();
             services.AddScoped<IProductReviewService, ProductReviewService>();
             services.AddScoped<IJwtService, JwtService>();
-            services.AddScoped<IJsonPlaceholderService, JsonPlaceholderService>();
+            //services.AddScoped<IJsonPlaceholderService, JsonPlaceholderService>();
 
             services.AddFluentValidationAutoValidation();
             services.AddFluentValidationClientsideAdapters();

@@ -1,4 +1,6 @@
 ﻿using Polly;
+using task_1135.Application.Services;
+using task_1135.Domain.Services;
 
 namespace task_1135.Extensions
 {
@@ -6,9 +8,9 @@ namespace task_1135.Extensions
     {
         public static void AddJsonPlaceholderHttpClient(this IServiceCollection services)
         {
-            services.AddHttpClient("JsonPlaceholder", client =>
+            services.AddHttpClient<IJsonPlaceholderService, JsonPlaceholderService>("JsonPlaceholder", client =>
             {
-                client.BaseAddress = new Uri("https://jsonplaceholder.typicode.com/");
+                client.BaseAddress = new Uri("https://jsonplaceholder.typicode.com_inv/");
                 client.Timeout = TimeSpan.FromSeconds(10);
             })
                 .AddTransientHttpErrorPolicy(p => p.WaitAndRetryAsync(3, _ => TimeSpan.FromSeconds(1)))

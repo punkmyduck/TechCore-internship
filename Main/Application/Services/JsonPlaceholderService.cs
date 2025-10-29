@@ -4,15 +4,14 @@ namespace task_1135.Application.Services
 {
     public class JsonPlaceholderService : IJsonPlaceholderService
     {
-        private readonly IHttpClientFactory _factory;
-        public JsonPlaceholderService(IHttpClientFactory factory)
+        private readonly HttpClient _httpClient;
+        public JsonPlaceholderService(HttpClient httpClient)
         {
-            _factory = factory;
+            _httpClient = httpClient;
         }
         public async Task<string> GetTodosJson()
         {
-            var client = _factory.CreateClient("JsonPlaceholder");
-            var response = await client.GetAsync("todos/1");
+            var response = await _httpClient.GetAsync("todos/1");
             response.EnsureSuccessStatusCode();
             return await response.Content.ReadAsStringAsync();
         }
