@@ -9,7 +9,17 @@ namespace task_1135.Extensions
     {
         public static void AddDatabaseConfiguration(this WebApplicationBuilder builder)
         {
-            builder.Services.AddDbContext<BookContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+            if (builder.Environment.EnvironmentName == "IntegrationTests")
+            {
+                builder.Services.AddDbContext<BookContext>(options =>
+                    options.UseInMemoryDatabase("TestDB"));
+            }
+            else
+            {
+                builder.Services.AddDbContext<BookContext>(options =>
+                    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+            }
+
             builder.Services.AddIdentity<ApplicationIdentityUser, IdentityRole>()
                 .AddEntityFrameworkStores<BookContext>()
                 .AddDefaultTokenProviders();
