@@ -1,4 +1,6 @@
-﻿namespace task_1135.Extensions
+﻿using Polly;
+
+namespace task_1135.Extensions
 {
     public static class HttpClientExtensions
     {
@@ -8,7 +10,8 @@
             {
                 client.BaseAddress = new Uri("https://jsonplaceholder.typicode.com/");
                 client.Timeout = TimeSpan.FromSeconds(10);
-            });
+            })
+                .AddTransientHttpErrorPolicy(p => p.WaitAndRetryAsync(3, _ => TimeSpan.FromSeconds(1)));
         }
     }
 }
