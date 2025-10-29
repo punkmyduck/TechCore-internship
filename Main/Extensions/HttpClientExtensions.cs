@@ -11,7 +11,8 @@ namespace task_1135.Extensions
                 client.BaseAddress = new Uri("https://jsonplaceholder.typicode.com/");
                 client.Timeout = TimeSpan.FromSeconds(10);
             })
-                .AddTransientHttpErrorPolicy(p => p.WaitAndRetryAsync(3, _ => TimeSpan.FromSeconds(1)));
+                .AddTransientHttpErrorPolicy(p => p.WaitAndRetryAsync(3, _ => TimeSpan.FromSeconds(1)))
+                .AddTransientHttpErrorPolicy(p => p.CircuitBreakerAsync(5, TimeSpan.FromSeconds(30)));
         }
     }
 }
