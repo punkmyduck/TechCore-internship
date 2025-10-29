@@ -8,7 +8,6 @@ namespace task_1135.Presentation.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    [Authorize]
     public class BookController : ControllerBase
     {
         private readonly IBookService _bookService;
@@ -22,6 +21,7 @@ namespace task_1135.Presentation.Controllers
         /// </summary>
         /// <returns>Список книг</returns>
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> GetBooks()
         {
             var books = await _bookService.GetAllAsync();
@@ -35,6 +35,7 @@ namespace task_1135.Presentation.Controllers
         /// <returns>Книга с указанным id или NotFound() если книги с указанным id не существует</returns>
         [HttpGet("{id}")]
         [OutputCache(PolicyName = "BookPolicy")]
+        [Authorize]
         public async Task<IActionResult> GetBookById([FromRoute] int id)
         {
             var book = await _bookService.GetByIdAsync(id);
@@ -61,6 +62,7 @@ namespace task_1135.Presentation.Controllers
         /// <param name="updateBookDto">Запись с атрибутами книги</param>
         /// <returns>Информация о измененной книге</returns>
         [HttpPut("{id}")]
+        [Authorize]
         public async Task<IActionResult> UpdateBook([FromRoute] int id, [FromBody] UpdateBookDto updateBookDto)
         {
             var book = await _bookService.UpdateAsync(id, updateBookDto);
@@ -74,6 +76,7 @@ namespace task_1135.Presentation.Controllers
         /// <param name="authorId">Идентификатор автора</param>
         /// <returns>Сообщение об успешном добавлении к книге автора</returns>
         [HttpPost("{bookId}/authors/{authorId}")]
+        [Authorize]
         public async Task<IActionResult> AddAuthorToBook(int bookId, int authorId)
         {
             await _bookService.AddAuthorToBookAsync(bookId, authorId);
@@ -100,6 +103,7 @@ namespace task_1135.Presentation.Controllers
         /// <param name="id">Идентификатор книги</param>
         /// <returns>Информация о книге, авторах и отзывах к этой книге</returns>
         [HttpGet("products/{id}/details")]
+        [Authorize]
         public async Task<IActionResult> GetDetails([FromRoute] int id)
         {
             return Ok(await _bookService.GetDetailsAsync(id));
