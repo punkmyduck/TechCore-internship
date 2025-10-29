@@ -19,6 +19,9 @@ namespace task_1135
             builder.Services.AddControllers();
             builder.Services.AddHealthChecks();
 
+            //Add http clients
+            builder.Services.AddJsonPlaceholderHttpClient();
+
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddSwaggerUI();
 
