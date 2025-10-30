@@ -4,8 +4,7 @@ using task1135.Application.Services;
 using task1135.Application.Validators;
 using Domain.Repositories;
 using Domain.Services;
-using task1135.Infrastructure.Repositories;
-using task1135.Infrastructure.Storage;
+using Persistence.Infrastructure.Repositories;
 
 namespace task1135.Extensions
 {
@@ -27,7 +26,6 @@ namespace task1135.Extensions
             services.AddValidatorsFromAssemblyContaining<UpdateBookDtoFluentValidator>();
             services.AddValidatorsFromAssemblyContaining<CreateReviewDtoFluentValidator>();
 
-            services.AddSingleton<BookStorage>();
             services.AddScoped<IBookRepository, DatabaseBookRepository>();
             services.AddScoped<IAuthorRepository, DatabaseAuthorRepository>();
             services.AddScoped<IProductReviewRepository, ProductReviewRepository>();

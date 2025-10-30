@@ -5,15 +5,15 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
-using task1135.Infrastructure;
+using Persistence.Infrastructure;
 
 #nullable disable
 
-namespace task1135.Migrations
+namespace Persistence.Migrations
 {
     [DbContext(typeof(BookContext))]
-    [Migration("20251028141431_AddDateOfBirthToUsers")]
-    partial class AddDateOfBirthToUsers
+    [Migration("20251030084506_FixMigration")]
+    partial class FixMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

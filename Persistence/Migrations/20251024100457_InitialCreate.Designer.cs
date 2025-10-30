@@ -4,15 +4,15 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
-using task1135.Infrastructure;
+using Persistence.Infrastructure;
 
 #nullable disable
 
-namespace task1135.Migrations
+namespace Persistence.Migrations
 {
     [DbContext(typeof(BookContext))]
-    [Migration("20251024110129_AddAuthorTable")]
-    partial class AddAuthorTable
+    [Migration("20251024100457_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -38,7 +38,7 @@ namespace task1135.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Authors");
+                    b.ToTable("Author");
                 });
 
             modelBuilder.Entity("task_1135.Domain.Models.Book", b =>

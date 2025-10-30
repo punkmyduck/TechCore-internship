@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
-namespace task1135.Infrastructure.Middlewares
+namespace Persistence.Infrastructure.Middlewares
 {
     public class ExceptionHandlerMiddleware
     {

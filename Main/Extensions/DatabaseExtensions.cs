@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Domain.Models;
-using task1135.Infrastructure;
+using Persistence.Infrastructure;
 
 namespace task1135.Extensions
 {

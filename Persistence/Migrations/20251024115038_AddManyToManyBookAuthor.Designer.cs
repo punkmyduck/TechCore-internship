@@ -4,15 +4,15 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
-using task1135.Infrastructure;
+using Persistence.Infrastructure;
 
 #nullable disable
 
-namespace task1135.Migrations
+namespace Persistence.Migrations
 {
     [DbContext(typeof(BookContext))]
-    [Migration("20251024100457_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20251024115038_AddManyToManyBookAuthor")]
+    partial class AddManyToManyBookAuthor
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -23,6 +23,21 @@ namespace task1135.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
+
+            modelBuilder.Entity("AuthorBook", b =>
+                {
+                    b.Property<int>("AuthorsId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("BooksId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("AuthorsId", "BooksId");
+
+                    b.HasIndex("BooksId");
+
+                    b.ToTable("BookAuthors", (string)null);
+                });
 
             modelBuilder.Entity("task_1135.Domain.Models.Author", b =>
                 {
@@ -38,7 +53,7 @@ namespace task1135.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Author");
+                    b.ToTable("Authors");
                 });
 
             modelBuilder.Entity("task_1135.Domain.Models.Book", b =>
@@ -49,9 +64,6 @@ namespace task1135.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("AuthorId")
-                        .HasColumnType("integer");
-
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("text");
@@ -61,25 +73,22 @@ namespace task1135.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AuthorId");
-
                     b.ToTable("Books");
                 });
 
-            modelBuilder.Entity("task_1135.Domain.Models.Book", b =>
+            modelBuilder.Entity("AuthorBook", b =>
                 {
-                    b.HasOne("task_1135.Domain.Models.Author", "Author")
-                        .WithMany("Books")
-                        .HasForeignKey("AuthorId")
+                    b.HasOne("task_1135.Domain.Models.Author", null)
+                        .WithMany()
+                        .HasForeignKey("AuthorsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Author");
-                });
-
-            modelBuilder.Entity("task_1135.Domain.Models.Author", b =>
-                {
-                    b.Navigation("Books");
+                    b.HasOne("task_1135.Domain.Models.Book", null)
+                        .WithMany()
+                        .HasForeignKey("BooksId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

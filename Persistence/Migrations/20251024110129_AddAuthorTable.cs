@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace task1135.Migrations
+namespace Persistence.Migrations
 {
     /// <inheritdoc />
     public partial class AddAuthorTable : Migration

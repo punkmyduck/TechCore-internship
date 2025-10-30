@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace task1135.Migrations
+namespace Persistence.Migrations
 {
     /// <inheritdoc />
     public partial class AddDateOfBirthToUsers : Migration

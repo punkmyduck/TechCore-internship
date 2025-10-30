@@ -2,7 +2,7 @@
 using Domain.Models;
 using Domain.Repositories;
 
-namespace task1135.Infrastructure.Repositories
+namespace Persistence.Infrastructure.Repositories
 {
     public class ProductReviewRepository : IProductReviewRepository
     {
