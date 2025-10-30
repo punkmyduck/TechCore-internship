@@ -1,3 +1,4 @@
+using MassTransit;
 using task_1135.Application.Services;
 using task_1135.Extensions;
 using task_1135.Infrastructure.Middlewares;
@@ -24,6 +25,9 @@ namespace task_1135
 
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddSwaggerUI();
+
+            //rabbitmq configuration
+            builder.Services.AddRabbitMqMassTransit();
 
             //HostedServices configuration
             builder.Services.AddHostedService<AverageRatingCalculatorService>();

@@ -30,6 +30,20 @@ services:
     volumes:
       - mongodata:/data/db
 
+  rabbitmq:
+    image: rabbitmq:3.11-management
+    container_name: rabbitmq
+    environment:
+      RABBITMQ_DEFAULT_USER: rabbit
+      RABBITMQ_DEFAULT_PASS: rabbitpass
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    restart: unless-stopped
+
 volumes:
   pgdata:
   mongodata:
+  rabbitmq_data:
