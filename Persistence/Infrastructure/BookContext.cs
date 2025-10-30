@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Domain.Models;
 
-namespace task1135.Infrastructure
+namespace Persistence.Infrastructure
 {
     public class BookContext : IdentityDbContext<ApplicationIdentityUser>
     {
