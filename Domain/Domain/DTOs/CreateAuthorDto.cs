@@ -1,4 +1,4 @@
-﻿namespace task_1135.Application.DTOs
+﻿namespace Domain.DTOs
 {
     public record CreateAuthorDto(string Name);
 }

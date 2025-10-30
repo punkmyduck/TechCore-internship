@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using task_1135.Domain.Models;
+using Domain.Models;
 
-namespace task_1135.Infrastructure
+namespace task1135.Infrastructure
 {
     public class BookContext : IdentityDbContext<ApplicationIdentityUser>
     {

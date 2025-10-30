@@ -1,10 +1,10 @@
 ﻿using Polly;
 using Polly.CircuitBreaker;
 using Polly.Extensions.Http;
-using task_1135.Application.Services;
-using task_1135.Domain.Services;
+using task1135.Application.Services;
+using Domain.Services;
 
-namespace task_1135.Extensions
+namespace task1135.Extensions
 {
     public static class HttpClientExtensions
     {

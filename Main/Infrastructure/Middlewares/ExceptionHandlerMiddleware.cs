@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using task_1135.Domain.Services;
 
-namespace task_1135.Infrastructure.Middlewares
+namespace task1135.Infrastructure.Middlewares
 {
     public class ExceptionHandlerMiddleware
     {

@@ -1,7 +1,7 @@
 ﻿using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Bson;
 
-namespace task_1135.Domain.Models
+namespace Domain.Models
 {
     public class ProductReview
     {

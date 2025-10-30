@@ -1,4 +1,4 @@
-﻿namespace task_1135.Application.DTOs
+﻿namespace task1135.Application.DTOs
 {
     public class SignInDto
     {

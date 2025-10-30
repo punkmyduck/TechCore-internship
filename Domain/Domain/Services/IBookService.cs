@@ -1,7 +1,7 @@
-﻿using task_1135.Application.DTOs;
-using task_1135.Domain.Models;
+﻿using Domain.DTOs;
+using Domain.Models;
 
-namespace task_1135.Domain.Services
+namespace Domain.Services
 {
     public interface IBookService
     {

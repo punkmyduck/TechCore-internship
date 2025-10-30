@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace task_1135.Migrations
+namespace task1135.Migrations
 {
     /// <inheritdoc />
     public partial class AddManyToManyBookAuthor : Migration

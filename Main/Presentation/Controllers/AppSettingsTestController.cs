@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
-using task_1135.Application.Settings;
+using task1135.Application.Settings;
 
-namespace task_1135.Presentation.Controllers
+namespace task1135.Presentation.Controllers
 {
     [ApiController]
     [Route("[controller]")]

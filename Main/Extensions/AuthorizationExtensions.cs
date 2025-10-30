@@ -1,4 +1,4 @@
-﻿namespace task_1135.Extensions
+﻿namespace task1135.Extensions
 {
     public static class AuthorizationExtensions
     {

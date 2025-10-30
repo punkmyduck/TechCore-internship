@@ -1,14 +1,12 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
-using task_1135.Domain.Services;
+using Domain.Services;
 using System.Text;
 using System.Security.Claims;
-using System.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
-using System.Threading.Tasks;
-using task_1135.Domain.Models;
+using Domain.Models;
 
-namespace task_1135.Application.Services
+namespace task1135.Application.Services
 {
     public class JwtService : IJwtService
     {

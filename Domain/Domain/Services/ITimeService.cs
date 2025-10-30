@@ -1,4 +1,4 @@
-﻿namespace task_1135.Domain.Services
+﻿namespace Domain.Services
 {
     public interface ITimeService
     {

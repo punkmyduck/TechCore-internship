@@ -1,11 +1,11 @@
 ﻿using System.Text.Json;
 using Microsoft.Extensions.Caching.Distributed;
-using task_1135.Application.DTOs;
-using task_1135.Domain.Models;
-using task_1135.Domain.Repositories;
-using task_1135.Domain.Services;
+using Domain.Models;
+using Domain.Repositories;
+using Domain.Services;
+using Domain.DTOs;
 
-namespace task_1135.Application.Services
+namespace task1135.Application.Services
 {
     public class BookService : IBookService
     {

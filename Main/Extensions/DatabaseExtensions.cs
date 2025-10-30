@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using task_1135.Domain.Models;
-using task_1135.Infrastructure;
+using Domain.Models;
+using task1135.Infrastructure;
 
-namespace task_1135.Extensions
+namespace task1135.Extensions
 {
     public static class DatabaseExtensions
     {

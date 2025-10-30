@@ -1,13 +1,13 @@
 ﻿using FluentValidation;
 using FluentValidation.AspNetCore;
-using task_1135.Application.Services;
-using task_1135.Application.Validators;
-using task_1135.Domain.Repositories;
-using task_1135.Domain.Services;
-using task_1135.Infrastructure.Repositories;
-using task_1135.Infrastructure.Storage;
+using task1135.Application.Services;
+using task1135.Application.Validators;
+using Domain.Repositories;
+using Domain.Services;
+using task1135.Infrastructure.Repositories;
+using task1135.Infrastructure.Storage;
 
-namespace task_1135.Extensions
+namespace task1135.Extensions
 {
     public static class ServiceExtensions
     {

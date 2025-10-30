@@ -5,11 +5,11 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
-using task_1135.Infrastructure;
+using task1135.Infrastructure;
 
 #nullable disable
 
-namespace task_1135.Migrations
+namespace task1135.Migrations
 {
     [DbContext(typeof(BookContext))]
     [Migration("20251028091805_AddIdentity")]

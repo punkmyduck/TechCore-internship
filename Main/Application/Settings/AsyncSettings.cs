@@ -1,4 +1,4 @@
-﻿namespace task_1135.Application.Settings
+﻿namespace task1135.Application.Settings
 {
     public class AsyncSettings
     {
