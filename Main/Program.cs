@@ -1,9 +1,8 @@
-using MassTransit;
-using task_1135.Application.Services;
-using task_1135.Extensions;
-using task_1135.Infrastructure.Middlewares;
+using task1135.Application.Services;
+using task1135.Extensions;
+using task1135.Infrastructure.Middlewares;
 
-namespace task_1135
+namespace Domain
 {
     public class Program
     {

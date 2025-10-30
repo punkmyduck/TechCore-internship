@@ -1,10 +1,10 @@
-﻿namespace task_1135.Domain.Models
+﻿namespace Domain.DTOs
 {
-    public class Book
+    public class ReturnBookDto
     {
         public int Id { get; set; }
         public string Title { get; set; } = null!;
         public int YearPublished { get; set; }
-        public List<Author> Authors { get; set; } = null!;
+        public List<ReturnAuthorShortDto> Authors { get; set; } = new();
     }
 }

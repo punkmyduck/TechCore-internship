@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using task_1135.Domain.Models;
-using task_1135.Domain.Repositories;
+using Domain.Models;
+using Domain.Repositories;
 
-namespace task_1135.Infrastructure.Repositories
+namespace task1135.Infrastructure.Repositories
 {
     public class DatabaseAuthorRepository : IAuthorRepository
     {

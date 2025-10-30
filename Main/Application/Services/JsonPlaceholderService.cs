@@ -1,6 +1,6 @@
-﻿using task_1135.Domain.Services;
+﻿using Domain.Services;
 
-namespace task_1135.Application.Services
+namespace task1135.Application.Services
 {
     public class JsonPlaceholderService : IJsonPlaceholderService
     {

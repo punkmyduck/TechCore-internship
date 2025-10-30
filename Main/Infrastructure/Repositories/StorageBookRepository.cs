@@ -1,10 +1,10 @@
 ﻿using Microsoft.Extensions.Options;
-using task_1135.Application.Settings;
-using task_1135.Domain.Models;
-using task_1135.Domain.Repositories;
-using task_1135.Infrastructure.Storage;
+using task1135.Application.Settings;
+using Domain.Models;
+using Domain.Repositories;
+using task1135.Infrastructure.Storage;
 
-namespace task_1135.Infrastructure.Repositories
+namespace task1135.Infrastructure.Repositories
 {
     public class StorageBookRepository : IBookRepository
     {

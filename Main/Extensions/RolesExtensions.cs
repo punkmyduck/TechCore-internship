@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 
-namespace task_1135.Extensions
+namespace task1135.Extensions
 {
     public static class RolesExtensions
     {

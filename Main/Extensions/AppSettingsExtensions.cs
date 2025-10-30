@@ -1,6 +1,6 @@
-﻿using task_1135.Application.Settings;
+﻿using task1135.Application.Settings;
 
-namespace task_1135.Extensions
+namespace task1135.Extensions
 {
     public static class AppSettingsExtensions
     {

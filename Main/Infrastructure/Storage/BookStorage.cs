@@ -1,6 +1,6 @@
-﻿using task_1135.Domain.Models;
+﻿using Domain.Models;
 
-namespace task_1135.Infrastructure.Storage
+namespace task1135.Infrastructure.Storage
 {
     public class BookStorage
     {

@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using task_1135.Application.DTOs;
-using task_1135.Domain.Services;
+using Domain.DTOs;
+using Domain.Services;
 
-namespace task_1135.Presentation.Controllers
+namespace task1135.Presentation.Controllers
 {
     [ApiController]
     [Route("[controller]")]

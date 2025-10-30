@@ -1,6 +1,6 @@
 ﻿using System.Net;
 using Microsoft.AspNetCore.Mvc.Testing;
-using task_1135;
+using Domain;
 using Xunit;
 
 namespace IntegrationTests

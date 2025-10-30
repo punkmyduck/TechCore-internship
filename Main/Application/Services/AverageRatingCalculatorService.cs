@@ -1,11 +1,9 @@
-﻿
-using System.Text.Json;
+﻿using System.Text.Json;
 using Microsoft.Extensions.Caching.Distributed;
 using MongoDB.Driver;
-using task_1135.Domain.Models;
-using task_1135.Domain.Repositories;
+using Domain.Models;
 
-namespace task_1135.Application.Services
+namespace task1135.Application.Services
 {
     public class AverageRatingCalculatorService : BackgroundService
     {

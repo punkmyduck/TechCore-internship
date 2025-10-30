@@ -3,8 +3,8 @@ using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using task_1135;
-using task_1135.Infrastructure;
+using Domain;
+using Domain.Infrastructure;
 
 namespace IntegrationTests
 {

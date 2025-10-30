@@ -1,6 +1,6 @@
-﻿using task_1135.Domain.Models;
+﻿using Domain.Models;
 
-namespace task_1135.Domain.Repositories
+namespace Domain.Repositories
 {
     public interface IBookRepository
     {

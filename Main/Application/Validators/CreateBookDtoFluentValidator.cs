@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
-using task_1135.Application.DTOs;
+using Domain.DTOs;
 
-namespace task_1135.Application.Validators
+namespace task1135.Application.Validators
 {
     public class CreateBookDtoFluentValidator : AbstractValidator<CreateBookDto>
     {
