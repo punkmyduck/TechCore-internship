@@ -1,6 +1,6 @@
 using task1135.Application.Services;
 using task1135.Extensions;
-using Persistence.Infrastructure.Middlewares;
+using task1135.Infrastructure.Middlewares;
 
 namespace Domain
 {
