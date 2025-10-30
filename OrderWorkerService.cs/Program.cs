@@ -26,6 +26,8 @@ namespace OrderWorkerService.cs
                     cfg.ReceiveEndpoint("submit-order-queue", e =>
                     {
                         e.ConfigureConsumer<SubmitOrderConsumer>(context);
+
+                        e.UseMessageRetry(r=> r.Interval(3, TimeSpan.FromSeconds(5)));
                     });
                 });
             });
