@@ -1,6 +1,4 @@
-﻿version: '3.8'
-
-services:
+﻿services:
   db:
     image: postgres:16
     container_name: postgres_db
@@ -45,8 +43,8 @@ services:
 
   api:
     build:
-      context: ./task-1135
-      dockerfile: Dockerfile
+      context: ..
+      dockerfile: ./Main/Dockerfile
     container_name: api_service
     depends_on:
       - db
@@ -58,6 +56,18 @@ services:
       ConnectionStrings__Default: "Host=db;Database=booksdb;Username=appuser;Password=apppassword"
     ports:
       - "8080:8080"
+    restart: always
+
+  worker:
+    build:
+      context: ..
+      dockerfile: ./OrderWorkerService.cs/Dockerfile
+    container_name: order_worker
+    depends_on:
+      - rabbitmq
+      - db
+    environment:
+      ASPNETCORE_ENVIRONMENT: "Production"
     restart: always
 
 volumes:

@@ -18,7 +18,7 @@ namespace OrderWorkerService.cs
 
                 x.UsingRabbitMq((context, cfg) =>
                 {
-                    cfg.Host("localhost", "/", h =>
+                    cfg.Host("rabbitmq", "/", h =>
                     {
                         h.Username("rabbit");
                         h.Password("rabbitpass");

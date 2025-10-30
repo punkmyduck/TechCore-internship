@@ -8,12 +8,12 @@ namespace task1135.Extensions
         {
             //MongoDB Configuration
             services.AddSingleton<IMongoClient>(sp =>
-                new MongoClient("mongodb://localhost:27017"));
+                new MongoClient("mongodb://mongo:27017"));
 
             //Redis configuration
             services.AddStackExchangeRedisCache(options =>
             {
-                options.Configuration = "localhost:6379";
+                options.Configuration = "redis:6379";
                 options.InstanceName = "booksapp_";
             });
         }

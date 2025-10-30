@@ -11,7 +11,7 @@ namespace task1135.Extensions
             {
                 x.UsingRabbitMq((context, cfg) =>
                 {
-                    cfg.Host("localhost", "/", h =>
+                    cfg.Host("rabbitmq", "/", h =>
                     {
                         h.Username("rabbit");
                         h.Password("rabbitpass");
