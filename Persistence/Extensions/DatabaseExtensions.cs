@@ -2,23 +2,18 @@
 using Microsoft.EntityFrameworkCore;
 using Domain.Models;
 using Persistence.Infrastructure;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Configuration;
 
-namespace task1135.Extensions
+namespace Persistence.Extensions
 {
     public static class DatabaseExtensions
     {
         public static void AddDatabaseConfiguration(this WebApplicationBuilder builder)
         {
-            if (builder.Environment.EnvironmentName == "IntegrationTests")
-            {
-                builder.Services.AddDbContext<BookContext>(options =>
-                    options.UseInMemoryDatabase("TestDB"));
-            }
-            else
-            {
-                builder.Services.AddDbContext<BookContext>(options =>
-                    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
-            }
+            builder.Services.AddDbContext<BookContext>(options =>
+                options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
             builder.Services.AddIdentity<ApplicationIdentityUser, IdentityRole>()
                 .AddEntityFrameworkStores<BookContext>()

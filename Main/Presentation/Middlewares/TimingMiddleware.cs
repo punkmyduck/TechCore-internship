@@ -1,7 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Logging;
-
-namespace Persistence.Infrastructure.Middlewares
+﻿namespace task1135.Infrastructure.Middlewares
 {
     public class TimingMiddleware
     {

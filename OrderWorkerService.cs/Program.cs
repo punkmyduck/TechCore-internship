@@ -8,14 +8,17 @@ namespace OrderWorkerService.cs
         public static void Main(string[] args)
         {
             var builder = Host.CreateApplicationBuilder(args);
-            builder.Services.AddHostedService<Worker>();
 
             builder.Services.AddMassTransit(x =>
             {
-                x.AddConsumer<SubmitOrderConsumer>();
+                x.AddConsumer<SubmitOrderConsumer>(cfg =>
+                {
+                    cfg.UseMessageRetry(r => r.Interval(3, TimeSpan.FromSeconds(5)));
+                });
+
                 x.UsingRabbitMq((context, cfg) =>
                 {
-                    cfg.Host("localhost", "/", h =>
+                    cfg.Host("rabbitmq", "/", h =>
                     {
                         h.Username("rabbit");
                         h.Password("rabbitpass");
@@ -23,6 +26,8 @@ namespace OrderWorkerService.cs
                     cfg.ReceiveEndpoint("submit-order-queue", e =>
                     {
                         e.ConfigureConsumer<SubmitOrderConsumer>(context);
+
+                        e.UseMessageRetry(r=> r.Interval(3, TimeSpan.FromSeconds(5)));
                     });
                 });
             });

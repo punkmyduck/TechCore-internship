@@ -1,9 +1,9 @@
 ﻿using System.Text;
 using Microsoft.Extensions.Caching.Distributed;
 using Moq;
-using Domain.Application.Services;
-using Domain.Domain.Models;
-using Domain.Domain.Repositories;
+using task1135.Application.Services;
+using Domain.Models;
+using Domain.Repositories;
 using Xunit;
 
 namespace Tests

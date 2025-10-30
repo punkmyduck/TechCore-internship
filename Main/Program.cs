@@ -1,6 +1,7 @@
+using Persistence.Extensions;
 using task1135.Application.Services;
 using task1135.Extensions;
-using Persistence.Infrastructure.Middlewares;
+using task1135.Infrastructure.Middlewares;
 
 namespace Domain
 {
@@ -56,7 +57,7 @@ namespace Domain
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
-            if (app.Environment.IsDevelopment())
+            if (app.Environment.IsDevelopment() || true)
             {
                 app.UseSwagger();
                 app.UseSwaggerUI();
