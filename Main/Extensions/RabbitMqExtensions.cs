@@ -1,4 +1,5 @@
-﻿using MassTransit;
+﻿using Contracts;
+using MassTransit;
 
 namespace task1135.Extensions
 {

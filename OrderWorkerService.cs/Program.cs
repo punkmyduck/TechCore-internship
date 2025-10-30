@@ -8,11 +8,14 @@ namespace OrderWorkerService.cs
         public static void Main(string[] args)
         {
             var builder = Host.CreateApplicationBuilder(args);
-            builder.Services.AddHostedService<Worker>();
 
             builder.Services.AddMassTransit(x =>
             {
-                x.AddConsumer<SubmitOrderConsumer>();
+                x.AddConsumer<SubmitOrderConsumer>(cfg =>
+                {
+                    cfg.UseMessageRetry(r => r.Interval(3, TimeSpan.FromSeconds(5)));
+                });
+
                 x.UsingRabbitMq((context, cfg) =>
                 {
                     cfg.Host("localhost", "/", h =>
