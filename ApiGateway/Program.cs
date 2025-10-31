@@ -21,10 +21,6 @@ namespace ApiGateway
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
-            //ocelot
-            builder.Configuration.AddJsonFile("ocelot.json", optional: false, reloadOnChange: true);
-            builder.Services.AddOcelot(builder.Configuration);
-
             //jwt
             var jwtSettings = builder.Configuration.GetSection("Jwt");
             var key = Encoding.UTF8.GetBytes(jwtSettings["SecretKey"]!);
@@ -47,6 +43,10 @@ namespace ApiGateway
                         IssuerSigningKey = new SymmetricSecurityKey(key)
                     };
                 });
+
+            //ocelot
+            builder.Configuration.AddJsonFile("ocelot.json", optional: false, reloadOnChange: true);
+            builder.Services.AddOcelot(builder.Configuration);
 
             ///////
             var app = builder.Build();
