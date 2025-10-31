@@ -1,3 +1,4 @@
+using System.Collections.Concurrent;
 using Confluent.Kafka;
 using MongoDB.Bson;
 using MongoDB.Driver;
@@ -24,25 +25,46 @@ namespace KafkaConsumerWorker
         {
             _logger.LogInformation("Kafka consumer started");
 
+            var processingTasks = new ConcurrentBag<Task>();
+
             try
             {
                 while (!stoppingToken.IsCancellationRequested)
                 {
                     var result = _consumer.Consume(stoppingToken);
-                    _logger.LogInformation($"Received: {result.Message.Value}");
+                    if (result?.Message == null) continue;
 
-                    var doc = new BsonDocument
+                    var task = Task.Run(async () =>
                     {
-                        {"Key", result.Message.Key },
-                        {"Value", result.Message.Value },
-                        {"Timestamp", result.Message.Timestamp.UtcDateTime }
-                    };
+                        try
+                        {
+                            var doc = new BsonDocument
+                            {
+                                {"Key", result.Message.Key },
+                                {"Value", result.Message.Value },
+                                {"Timestamp", result.Message.Timestamp.UtcDateTime }
+                            };
 
-                    await _collection.InsertOneAsync(doc, cancellationToken: stoppingToken);
+                            await _collection.InsertOneAsync(doc, cancellationToken: stoppingToken);
+                            _consumer.StoreOffset(result);
+                            _logger.LogInformation($"Received: {result.Message.Value}");
+                        }
+                        catch (Exception ex)
+                        {
+                            _logger.LogError(ex, "Error processing message at offset {Offset}", result.Offset);
+                        }
+                    }, stoppingToken);
+
+                    processingTasks.Add(task);
                 }
+            }
+            catch (OperationCanceledException)
+            {
+                _logger.LogInformation("kafka consumer stopping...");
             }
             finally
             {
+                await Task.WhenAll(processingTasks);
                 _consumer.Close();
             }
         }

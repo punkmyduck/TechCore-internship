@@ -16,7 +16,9 @@ namespace KafkaConsumerWorker.Extensions
                 {
                     BootstrapServers = kafkaConf.BootstrapServers,
                     GroupId = "analytics-consumer-group",
-                    AutoOffsetReset = AutoOffsetReset.Earliest
+                    AutoOffsetReset = AutoOffsetReset.Earliest,
+                    EnableAutoCommit = false,
+                    EnableAutoOffsetStore = false
                 };
 
                 var consumer = new ConsumerBuilder<string, string>(conf).Build();
