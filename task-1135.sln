@@ -24,6 +24,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docker", "Docker", "{754FC0
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KafkaConsumerWorker", "KafkaConsumerWorker\KafkaConsumerWorker.csproj", "{8E3BC8E6-CED2-4E38-A23C-8863F8684207}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiGateway", "ApiGateway\ApiGateway.csproj", "{76037390-D7EA-4B8C-83BA-74DBA168A1A1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -62,6 +64,10 @@ Global
 		{8E3BC8E6-CED2-4E38-A23C-8863F8684207}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8E3BC8E6-CED2-4E38-A23C-8863F8684207}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8E3BC8E6-CED2-4E38-A23C-8863F8684207}.Release|Any CPU.Build.0 = Release|Any CPU
+		{76037390-D7EA-4B8C-83BA-74DBA168A1A1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{76037390-D7EA-4B8C-83BA-74DBA168A1A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{76037390-D7EA-4B8C-83BA-74DBA168A1A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{76037390-D7EA-4B8C-83BA-74DBA168A1A1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

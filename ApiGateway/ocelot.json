@@ -1,0 +1,111 @@
+﻿{
+    "Aggregates": [
+        {
+            "RouteKeys": [ "BookById", "Hello" ],
+            "UpstreamPathTemplate": "/aggregate/api/details/{id}",
+            "Aggregator": "DetailsAggregator"
+        }
+    ],
+    "Routes": [
+        {
+            "DownstreamPathTemplate": "/Auth/register",
+            "DownstreamScheme": "http",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "api_service",
+                    "Port": 8080
+                }
+            ],
+            "UpstreamPathTemplate": "/api/auth/register",
+            "UpstreamHttpMethod": [ "POST" ]
+        },
+        {
+            "DownstreamPathTemplate": "/Auth/login",
+            "DownstreamScheme": "http",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "api_service",
+                    "Port": 8080
+                }
+            ],
+            "UpstreamPathTemplate": "/api/auth/login",
+            "UpstreamHttpMethod": [ "POST" ]
+        },
+        {
+            "DownstreamPathTemplate": "/book",
+            "DownstreamScheme": "http",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "api_service",
+                    "Port": 8080
+                }
+            ],
+            "UpstreamPathTemplate": "/api/book",
+            "UpstreamHttpMethod": [ "DELETE" ],
+            "AuthenticationOptions": {
+                "AuthenticationProviderKey": "Bearer",
+                "AllowedScopes": []
+            },
+            "RouteClaimsRequirement": {
+                "role": "Admin"
+            }
+        },
+        {
+            "DownstreamPathTemplate": "/worker/{everything}",
+            "DownstreamScheme": "http",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "api_service",
+                    "Port": 80
+                }
+            ],
+            "UpstreamPathTemplate": "/worker/{everything}",
+            "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ]
+        },
+        {
+            "DownstreamPathTemplate": "/Book/{id}",
+            "DownstreamScheme": "http",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "api_service",
+                    "Port": 8080
+                }
+            ],
+            "UpstreamPathTemplate": "/api/Book/{id}",
+            "UpstreamHttpMethod": [ "GET" ],
+            "Key": "BookById"
+        },
+        {
+            "DownstreamPathTemplate": "/Hello",
+            "DownstreamScheme": "http",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "api_service",
+                    "Port": 8080
+                }
+            ],
+            "UpstreamPathTemplate": "/api/Hello",
+            "UpstreamHttpMethod": [ "GET" ],
+            "Key": "Hello"
+        },
+        {
+            "DownstreamPathTemplate": "/{everything}",
+            "DownstreamScheme": "http",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "api_service",
+                    "Port": 8080
+                }
+            ],
+            "UpstreamPathTemplate": "/api/{everything}",
+            "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ],
+            "AuthenticationOptions": {
+                "AuthenticationProviderKey": "Bearer",
+                "AllowedScopes": []
+            }
+        }
+    ],
+    "GlobalConfiguration": {
+        "BaseUrl": "http://localhost:5000"
+    }
+}
