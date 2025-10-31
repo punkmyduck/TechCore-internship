@@ -1,4 +1,6 @@
 using Confluent.Kafka;
+using MongoDB.Bson;
+using MongoDB.Driver;
 
 namespace KafkaConsumerWorker
 {
@@ -6,13 +8,16 @@ namespace KafkaConsumerWorker
     {
         private readonly ILogger<KafkaConsumerService> _logger;
         private readonly IConsumer<string, string> _consumer;
+        private readonly IMongoCollection<BsonDocument> _collection;
 
         public KafkaConsumerService(
             ILogger<KafkaConsumerService> logger,
-            IConsumer<string, string> consumer)
+            IConsumer<string, string> consumer,
+            IMongoClient mongoClient)
         {
             _logger = logger;
             _consumer = consumer;
+            _collection = mongoClient.GetDatabase("analyticsdb").GetCollection<BsonDocument>("events");
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -25,7 +30,15 @@ namespace KafkaConsumerWorker
                 {
                     var result = _consumer.Consume(stoppingToken);
                     _logger.LogInformation($"Received: {result.Message.Value}");
-                    await Task.Delay(100, stoppingToken);
+
+                    var doc = new BsonDocument
+                    {
+                        {"Key", result.Message.Key },
+                        {"Value", result.Message.Value },
+                        {"Timestamp", result.Message.Timestamp.UtcDateTime }
+                    };
+
+                    await _collection.InsertOneAsync(doc, cancellationToken: stoppingToken);
                 }
             }
             finally
