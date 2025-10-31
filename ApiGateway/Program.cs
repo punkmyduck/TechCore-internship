@@ -1,5 +1,6 @@
 using System.Text;
 using System.Threading.Tasks;
+using ApiGateway.Aggregators;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Ocelot.DependencyInjection;
@@ -46,7 +47,10 @@ namespace ApiGateway
 
             //ocelot
             builder.Configuration.AddJsonFile("ocelot.json", optional: false, reloadOnChange: true);
-            builder.Services.AddOcelot(builder.Configuration);
+            builder.Services.AddOcelot(builder.Configuration)
+                .AddSingletonDefinedAggregator<DetailsAggregator>();
+
+            
 
             ///////
             var app = builder.Build();
