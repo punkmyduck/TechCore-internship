@@ -70,7 +70,11 @@ namespace task1135.Application.Services
         {
             string cacheKey = $"book:{id}";
             var cached = await _distributedCache.GetStringAsync(cacheKey);
-            if (cached != null) return JsonSerializer.Deserialize<ReturnBookDto>(cached);
+            if (cached != null) 
+            {
+                await _producer.ProduceAsync("book-views", new Message<string, string> { Key = $"book_{id}_view", Value = $"book {id} has been watched" });
+                return JsonSerializer.Deserialize<ReturnBookDto>(cached);
+            }
 
             var book = await _bookRepository.GetByIdAsync(id);
             if (book == null) return null;

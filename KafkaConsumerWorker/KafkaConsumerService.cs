@@ -1,23 +1,36 @@
+using Confluent.Kafka;
+
 namespace KafkaConsumerWorker
 {
     public class KafkaConsumerService : BackgroundService
     {
         private readonly ILogger<KafkaConsumerService> _logger;
+        private readonly IConsumer<string, string> _consumer;
 
-        public KafkaConsumerService(ILogger<KafkaConsumerService> logger)
+        public KafkaConsumerService(
+            ILogger<KafkaConsumerService> logger,
+            IConsumer<string, string> consumer)
         {
             _logger = logger;
+            _consumer = consumer;
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            while (!stoppingToken.IsCancellationRequested)
+            _logger.LogInformation("Kafka consumer started");
+
+            try
             {
-                if (_logger.IsEnabled(LogLevel.Information))
+                while (!stoppingToken.IsCancellationRequested)
                 {
-                    _logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
+                    var result = _consumer.Consume(stoppingToken);
+                    _logger.LogInformation($"Received: {result.Message.Value}");
+                    await Task.Delay(100, stoppingToken);
                 }
-                await Task.Delay(1000, stoppingToken);
+            }
+            finally
+            {
+                _consumer.Close();
             }
         }
     }
