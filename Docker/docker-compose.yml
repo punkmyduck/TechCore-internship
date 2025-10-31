@@ -92,6 +92,30 @@
       ASPNETCORE_ENVIRONMENT: "Production"
     restart: always
 
+  apigateway:
+    build:
+      context: ..
+      dockerfile: ./ApiGateway/Dockerfile
+    container_name: apigateway
+    depends_on:
+      - api
+      - worker
+    ports:
+      - "5000:8080"
+    networks:
+      - default
+
+  kafkaconsumerworker:
+    build:
+      context: ..
+      dockerfile: ./KafkaConsumerWorker/Dockerfile
+    container_name: kafkaconsumerworker
+    depends_on:
+      - kafka
+      - zookeeper
+    networks:
+      - default
+
 volumes:
   pgdata:
   mongodata:
