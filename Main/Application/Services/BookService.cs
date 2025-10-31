@@ -4,6 +4,7 @@ using Domain.Models;
 using Domain.Repositories;
 using Domain.Services;
 using Domain.DTOs;
+using Confluent.Kafka;
 
 namespace task1135.Application.Services
 {
@@ -12,14 +13,17 @@ namespace task1135.Application.Services
         private readonly IBookRepository _bookRepository;
         private readonly IProductReviewRepository _productReviewRepository;
         private readonly IDistributedCache _distributedCache;
+        private readonly IProducer<string, string> _producer;
         public BookService(
             IBookRepository bookRepository,
             IDistributedCache distributedCache,
-            IProductReviewRepository productReviewRepository)
+            IProductReviewRepository productReviewRepository,
+            IProducer<string, string> producer)
         {
             _bookRepository = bookRepository;
             _distributedCache = distributedCache;
             _productReviewRepository = productReviewRepository;
+            _producer = producer;
         }
         public async Task<Book> AddAsync(CreateBookDto createBookDto)
         {
@@ -66,7 +70,11 @@ namespace task1135.Application.Services
         {
             string cacheKey = $"book:{id}";
             var cached = await _distributedCache.GetStringAsync(cacheKey);
-            if (cached != null) return JsonSerializer.Deserialize<ReturnBookDto>(cached);
+            if (cached != null) 
+            {
+                await _producer.ProduceAsync("book-views", new Message<string, string> { Key = $"book_{id}_view", Value = $"book {id} has been watched" });
+                return JsonSerializer.Deserialize<ReturnBookDto>(cached);
+            }
 
             var book = await _bookRepository.GetByIdAsync(id);
             if (book == null) return null;
@@ -74,6 +82,9 @@ namespace task1135.Application.Services
             var bookDto = GetReturnBookDto(book);
 
             await _distributedCache.SetStringAsync(cacheKey, JsonSerializer.Serialize(bookDto));
+
+            await _producer.ProduceAsync("book-views", new Message<string, string> { Key = $"book_{id}_view", Value = $"book {id} has been watched" });
+
             return bookDto;
         }
 
