@@ -27,13 +27,13 @@ namespace Domain
             builder.Services.AddSwaggerUI();
 
             //rabbitmq configuration
-            builder.Services.AddRabbitMqMassTransit();
+            builder.AddRabbitMqMassTransit();
 
             //HostedServices configuration
             builder.Services.AddHostedService<AverageRatingCalculatorService>();
 
             //NoSQL configuration
-            builder.Services.AddNoSqlServices();
+            builder.AddNoSqlServices();
 
             //OutputCache configuration
             builder.Services.AddOutputCache(options =>
