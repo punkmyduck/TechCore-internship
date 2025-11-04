@@ -7,6 +7,8 @@ using task1135.Extensions;
 using task1135.Infrastructure.Middlewares;
 using Confluent.Kafka.Extensions.OpenTelemetry;
 using OpenTelemetry.Metrics;
+using Serilog;
+using Serilog.Sinks.Grafana.Loki;
 
 namespace Domain
 {
@@ -19,6 +21,13 @@ namespace Domain
             builder.Logging.ClearProviders();
             builder.Logging.AddConsole();
             builder.Logging.AddDebug();
+
+            Log.Logger = new LoggerConfiguration()
+                .WriteTo.Console()
+                .WriteTo.GrafanaLoki("http://loki:3100")
+                .CreateLogger();
+
+            builder.Host.UseSerilog();
 
             // Add services to the container.
             builder.Services.AddAuthorizationWithPolicy();
