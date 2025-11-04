@@ -1,6 +1,10 @@
 using MassTransit;
+using OpenTelemetry.Metrics;
+using OpenTelemetry.Resources;
+using OpenTelemetry.Trace;
 using OrderWorkerService.cs.Workers;
 using task_1135.Application.Settings;
+using Confluent.Kafka.Extensions.OpenTelemetry;
 
 namespace OrderWorkerService.cs
 {
@@ -35,6 +39,30 @@ namespace OrderWorkerService.cs
                     });
                 });
             });
+
+            builder.Services.AddOpenTelemetry()
+                .WithTracing(b =>
+                {
+                    b
+                    .SetResourceBuilder(ResourceBuilder.CreateDefault().AddService(builder.Environment.ApplicationName))
+                    .AddHttpClientInstrumentation()
+                    .AddAspNetCoreInstrumentation()
+                    .AddConfluentKafkaInstrumentation()
+                    .AddMassTransitInstrumentation()
+                    .AddZipkinExporter(o =>
+                    {
+                        o.Endpoint = new Uri(builder.Configuration.GetSection("ZipkinSettings")["Path"]!);
+                    });
+                });
+
+            builder.Services.AddOpenTelemetry()
+                .WithMetrics(b =>
+                {
+                    b
+                    .AddAspNetCoreInstrumentation()
+                    .AddHttpClientInstrumentation()
+                    .AddPrometheusExporter();
+                });
 
             var host = builder.Build();
             host.Run();
