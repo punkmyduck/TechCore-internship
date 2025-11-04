@@ -16,7 +16,8 @@ namespace task_1135.Extensions
                 {
                     BootstrapServers = kafkaConf.BootstrapServers
                 };
-                return new ProducerBuilder<string, string>(config).Build();
+                return new ProducerBuilder<string, string>(config)
+                .Build();
             });
         }
     }

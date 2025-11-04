@@ -5,6 +5,7 @@ using task_1135.Extensions;
 using task1135.Application.Services;
 using task1135.Extensions;
 using task1135.Infrastructure.Middlewares;
+using Confluent.Kafka.Extensions.OpenTelemetry;
 
 namespace Domain
 {
@@ -66,8 +67,10 @@ namespace Domain
                 {
                     b
                     .SetResourceBuilder(ResourceBuilder.CreateDefault().AddService(builder.Environment.ApplicationName))
-                    .AddAspNetCoreInstrumentation()
                     .AddHttpClientInstrumentation()
+                    .AddAspNetCoreInstrumentation()
+                    .AddConfluentKafkaInstrumentation()
+                    .AddMassTransitInstrumentation()
                     .AddZipkinExporter(o =>
                     {
                         o.Endpoint = new Uri(builder.Configuration.GetSection("ZipkinSettings")["Path"]!);
