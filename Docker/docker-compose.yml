@@ -138,6 +138,17 @@
     networks:
       - default
 
+  zipkin:
+    image: openzipkin/zipkin:latest
+    container_name: zipkin
+    restart: unless-stopped
+    ports:
+      - "9411:9411"
+    environment:
+      - STORAGE_TYPE=mem
+    networks:
+        - default
+
 volumes:
   pgdata:
   mongodata:
