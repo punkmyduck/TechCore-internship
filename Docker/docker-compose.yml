@@ -51,18 +51,39 @@
       - "2181:2181"
 
   kafka:
-      image: confluentinc/cp-kafka:7.7.1
-      container_name: kafka
-      depends_on:
-        - zookeeper
-      ports:
-        - "9092:9092"
-      environment:
-        KAFKA_BROKER_ID: 1
-        KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-        KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092
-        KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
-        KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+    image: confluentinc/cp-kafka:7.7.1
+    container_name: kafka
+    depends_on:
+      - zookeeper
+    ports:
+      - "9092:9092"     # доступ из Docker-сети
+      - "29092:29092"   # доступ с хоста (например, из Visual Studio)
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+
+      # Два listener-а: один для Docker (PLAINTEXT), другой для внешних клиентов (OUTSIDE)
+      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092,OUTSIDE://0.0.0.0:29092
+
+      # Как Kafka "рекламирует" себя клиентам
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092,OUTSIDE://localhost:29092
+
+      # Сопоставление listener-имен с протоколами
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,OUTSIDE:PLAINTEXT
+
+      # Для общения между брокерами (т.к. у нас один — не критично)
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+
+      # Репликация топиков (1 брокер — минимально 1)
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+
+    # Чтобы гарантировать, что Kafka дождется готовности ZooKeeper
+    healthcheck:
+      test: ["CMD", "nc", "-z", "localhost", "9092"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
 
   api:
     build:
