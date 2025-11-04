@@ -1,3 +1,5 @@
+using OpenTelemetry.Resources;
+using OpenTelemetry.Trace;
 using Persistence.Extensions;
 using task_1135.Extensions;
 using task1135.Application.Services;
@@ -57,6 +59,21 @@ namespace Domain
 
             //JWT configuration
             builder.AddJwtAuthentication();
+
+            //opentelemetry configuration
+            builder.Services.AddOpenTelemetry()
+                .WithTracing(b =>
+                {
+                    b
+                    .SetResourceBuilder(ResourceBuilder.CreateDefault().AddService(builder.Environment.ApplicationName))
+                    .AddAspNetCoreInstrumentation()
+                    .AddHttpClientInstrumentation()
+                    .AddZipkinExporter(o =>
+                    {
+                        o.Endpoint = new Uri(builder.Configuration.GetSection("ZipkinSettings")["Path"]!);
+                    });
+                });
+
 
             var app = builder.Build();
 
