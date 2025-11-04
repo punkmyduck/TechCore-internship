@@ -87,6 +87,13 @@ namespace Domain
                     .AddPrometheusExporter();
                 });
 
+            builder.Services.AddOpenTelemetry()
+                .WithMetrics(b =>
+                {
+                    b.AddMeter("BookService.Metrics")
+                    .AddPrometheusExporter();
+                });
+
 
             var app = builder.Build();
 

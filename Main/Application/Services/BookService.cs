@@ -5,11 +5,15 @@ using Domain.Repositories;
 using Domain.Services;
 using Domain.DTOs;
 using Confluent.Kafka;
+using System.Diagnostics.Metrics;
 
 namespace task1135.Application.Services
 {
     public class BookService : IBookService
     {
+        private static readonly Meter _meter = new("BookService.Metrics");
+        private static readonly Counter<int> _bookCounter = _meter.CreateCounter<int>("books_created_total");
+
         private readonly IBookRepository _bookRepository;
         private readonly IProductReviewRepository _productReviewRepository;
         private readonly IDistributedCache _distributedCache;
@@ -32,6 +36,8 @@ namespace task1135.Application.Services
                 Title = createBookDto.Title,
                 YearPublished = createBookDto.YearPublished
             };
+
+            _bookCounter.Add(1);
 
             await _bookRepository.AddAsync(book);
             await _bookRepository.SaveChangesAsync();
