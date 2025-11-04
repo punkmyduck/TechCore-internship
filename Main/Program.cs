@@ -6,6 +6,7 @@ using task1135.Application.Services;
 using task1135.Extensions;
 using task1135.Infrastructure.Middlewares;
 using Confluent.Kafka.Extensions.OpenTelemetry;
+using OpenTelemetry.Metrics;
 
 namespace Domain
 {
@@ -77,6 +78,15 @@ namespace Domain
                     });
                 });
 
+            builder.Services.AddOpenTelemetry()
+                .WithMetrics(b =>
+                {
+                    b
+                    .AddAspNetCoreInstrumentation()
+                    .AddHttpClientInstrumentation()
+                    .AddPrometheusExporter();
+                });
+
 
             var app = builder.Build();
 
@@ -104,6 +114,7 @@ namespace Domain
             app.MapControllers();
 
             app.MapHealthChecks("/healthz");
+            app.MapPrometheusScrapingEndpoint("/metrics");
 
             app.Run();
         }
