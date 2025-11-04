@@ -5,6 +5,10 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
+using OpenTelemetry.Metrics;
+using OpenTelemetry.Resources;
+using OpenTelemetry.Trace;
+using Confluent.Kafka.Extensions.OpenTelemetry;
 
 
 namespace ApiGateway
@@ -50,7 +54,31 @@ namespace ApiGateway
             builder.Services.AddOcelot(builder.Configuration)
                 .AddSingletonDefinedAggregator<DetailsAggregator>();
 
-            
+
+            builder.Services.AddOpenTelemetry()
+                .WithTracing(b =>
+                {
+                    b
+                    .SetResourceBuilder(ResourceBuilder.CreateDefault().AddService(builder.Environment.ApplicationName))
+                    .AddHttpClientInstrumentation()
+                    .AddAspNetCoreInstrumentation()
+                    .AddConfluentKafkaInstrumentation()
+                    .AddMassTransitInstrumentation()
+                    .AddZipkinExporter(o =>
+                    {
+                        o.Endpoint = new Uri(builder.Configuration.GetSection("ZipkinSettings")["Path"]!);
+                    });
+                });
+
+            builder.Services.AddOpenTelemetry()
+                .WithMetrics(b =>
+                {
+                    b
+                    .AddAspNetCoreInstrumentation()
+                    .AddHttpClientInstrumentation()
+                    .AddPrometheusExporter();
+                });
+
 
             ///////
             var app = builder.Build();

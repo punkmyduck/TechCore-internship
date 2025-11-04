@@ -1,7 +1,10 @@
-
+using Confluent.Kafka.Extensions.OpenTelemetry;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using OpenTelemetry.Metrics;
+using OpenTelemetry.Resources;
+using OpenTelemetry.Trace;
 
 namespace YarpApiGateway
 {
@@ -46,6 +49,29 @@ namespace YarpApiGateway
             builder.Services.AddReverseProxy()
                 .LoadFromConfig(builder.Configuration.GetSection("ReverseProxy"));
 
+            builder.Services.AddOpenTelemetry()
+                .WithTracing(b =>
+                {
+                    b
+                    .SetResourceBuilder(ResourceBuilder.CreateDefault().AddService(builder.Environment.ApplicationName))
+                    .AddHttpClientInstrumentation()
+                    .AddAspNetCoreInstrumentation()
+                    .AddConfluentKafkaInstrumentation()
+                    .AddMassTransitInstrumentation()
+                    .AddZipkinExporter(o =>
+                    {
+                        o.Endpoint = new Uri(builder.Configuration.GetSection("ZipkinSettings")["Path"]!);
+                    });
+                });
+
+            builder.Services.AddOpenTelemetry()
+                .WithMetrics(b =>
+                {
+                    b
+                    .AddAspNetCoreInstrumentation()
+                    .AddHttpClientInstrumentation()
+                    .AddPrometheusExporter();
+                });
 
             var app = builder.Build();
 

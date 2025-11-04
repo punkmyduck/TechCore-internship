@@ -1,8 +1,14 @@
+using OpenTelemetry.Resources;
+using OpenTelemetry.Trace;
 using Persistence.Extensions;
 using task_1135.Extensions;
 using task1135.Application.Services;
 using task1135.Extensions;
 using task1135.Infrastructure.Middlewares;
+using Confluent.Kafka.Extensions.OpenTelemetry;
+using OpenTelemetry.Metrics;
+using Serilog;
+using Serilog.Sinks.Grafana.Loki;
 
 namespace Domain
 {
@@ -15,6 +21,13 @@ namespace Domain
             builder.Logging.ClearProviders();
             builder.Logging.AddConsole();
             builder.Logging.AddDebug();
+
+            Log.Logger = new LoggerConfiguration()
+                .WriteTo.Console()
+                .WriteTo.GrafanaLoki("http://loki:3100")
+                .CreateLogger();
+
+            builder.Host.UseSerilog();
 
             // Add services to the container.
             builder.Services.AddAuthorizationWithPolicy();
@@ -58,6 +71,39 @@ namespace Domain
             //JWT configuration
             builder.AddJwtAuthentication();
 
+            //opentelemetry configuration
+            builder.Services.AddOpenTelemetry()
+                .WithTracing(b =>
+                {
+                    b
+                    .SetResourceBuilder(ResourceBuilder.CreateDefault().AddService(builder.Environment.ApplicationName))
+                    .AddHttpClientInstrumentation()
+                    .AddAspNetCoreInstrumentation()
+                    .AddConfluentKafkaInstrumentation()
+                    .AddMassTransitInstrumentation()
+                    .AddZipkinExporter(o =>
+                    {
+                        o.Endpoint = new Uri(builder.Configuration.GetSection("ZipkinSettings")["Path"]!);
+                    });
+                });
+
+            builder.Services.AddOpenTelemetry()
+                .WithMetrics(b =>
+                {
+                    b
+                    .AddAspNetCoreInstrumentation()
+                    .AddHttpClientInstrumentation()
+                    .AddPrometheusExporter();
+                });
+
+            builder.Services.AddOpenTelemetry()
+                .WithMetrics(b =>
+                {
+                    b.AddMeter("BookService.Metrics")
+                    .AddPrometheusExporter();
+                });
+
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -84,6 +130,7 @@ namespace Domain
             app.MapControllers();
 
             app.MapHealthChecks("/healthz");
+            app.MapPrometheusScrapingEndpoint("/metrics");
 
             app.Run();
         }
