@@ -20,6 +20,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docker", "Docker", "{754FC069-D67B-A9D7-50A1-8D1CA196D8F1}"
 	ProjectSection(SolutionItems) = preProject
 		Docker\docker-compose.yml = Docker\docker-compose.yml
+		Docker\Dockerfile.prometheus = Docker\Dockerfile.prometheus
+		Docker\prometheus.yml = Docker\prometheus.yml
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KafkaConsumerWorker", "KafkaConsumerWorker\KafkaConsumerWorker.csproj", "{8E3BC8E6-CED2-4E38-A23C-8863F8684207}"

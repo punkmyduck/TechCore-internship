@@ -8,6 +8,18 @@
     ],
     "Routes": [
         {
+            "DownstreamPathTemplate": "/metrics",
+            "DownstreamScheme": "http",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "api_service",
+                    "Port": 8080
+                }
+            ],
+            "UpstreamPathTemplate": "/metrics",
+            "UpstreamHttpMethod": [ "GET" ]
+        },
+        {
             "DownstreamPathTemplate": "/Auth/register",
             "DownstreamScheme": "http",
             "DownstreamHostAndPorts": [

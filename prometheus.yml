@@ -1,0 +1,15 @@
+global:
+  scrape_interval: 15s  # частота опроса всех таргетов
+
+scrape_configs:
+  - job_name: 'book-service'
+    static_configs:
+      - targets: ['api:8080']  # метрики с /metrics
+
+  - job_name: 'gateway'
+    static_configs:
+      - targets: ['apigateway:8080']
+
+  - job_name: 'worker'
+    static_configs:
+      - targets: ['worker:8080']

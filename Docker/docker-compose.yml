@@ -149,6 +149,24 @@
     networks:
         - default
 
+  prometheus:
+    build:
+      context: ../Docker  # в этой папке лежит Dockerfile и prometheus.yml
+      dockerfile: Dockerfile.prometheus
+    container_name: prometheus
+    ports:
+      - "9090:9090"
+    networks:
+      - default
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    networks:
+      - default
+
 volumes:
   pgdata:
   mongodata:
