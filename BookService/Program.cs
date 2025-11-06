@@ -1,3 +1,6 @@
+using Persistence.Extensions;
+using BookService.Extensions;
+
 namespace BookService
 {
     /*/
@@ -20,10 +23,13 @@ namespace BookService
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
+            builder.AddDatabaseConfiguration();
+            builder.Services.AddServices();
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
-            if (app.Environment.IsDevelopment())
+            if (app.Environment.IsDevelopment() || true)
             {
                 app.UseSwagger();
                 app.UseSwaggerUI();
