@@ -16,10 +16,10 @@ spec:
     spec:
       containers:
         - name: book-service
-          image: book-service:k8s
+          image: punkmyduck/book-service:k8s
           imagePullPolicy: IfNotPresent
           ports:
-            - containerPort: 8080
+            - containerPort: 80
           env:
             - name: ASPNETCORE_ENVIRONMENT
               value: Production
@@ -40,7 +40,8 @@ spec:
                   key: POSTGRES_DB
           volumeMounts:
             - name: config-volume
-              mountPath: /app/config
+              mountPath: /app/appsettings.json
+              subPath: appsettings.json
               readOnly: true
       volumes:
         - name: config-volume

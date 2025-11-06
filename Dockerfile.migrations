@@ -1,0 +1,17 @@
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS migrator
+WORKDIR /src
+
+COPY ["BookService/BookService.csproj", "BookService/"]
+COPY ["Persistence/Persistence.csproj", "Persistence/"]
+
+RUN dotnet restore "BookService/BookService.csproj"
+
+COPY . .
+
+# Устанавливаем EF Core Tools глобально
+RUN dotnet tool install --global dotnet-ef --version 9.0.10
+ENV PATH="$PATH:/root/.dotnet/tools"
+
+WORKDIR "/src/BookService"
+
+ENTRYPOINT ["dotnet", "ef", "database", "update", "--project", "../Persistence", "--startup-project", "."]

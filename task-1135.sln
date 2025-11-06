@@ -30,13 +30,15 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiGateway", "ApiGateway\Ap
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YarpApiGateway", "YarpApiGateway\YarpApiGateway.csproj", "{E8208A33-100A-49A7-902A-673137F13F4B}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "KubernetesFiles", "KubernetesFiles", "{7A22F366-CD85-47AB-A849-0B0AFA5BD1E6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BookService", "BookService\BookService.csproj", "{AB6AF4A8-9F43-46CA-9A58-78417E5A1D6F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Элементы решения", "Элементы решения", "{7F76711D-8062-44EE-84AB-CFB30BC06A49}"
 	ProjectSection(SolutionItems) = preProject
-		KubernetesFiles\book-service-deployment.yml = KubernetesFiles\book-service-deployment.yml
-		KubernetesFiles\book-service-service.yml = KubernetesFiles\book-service-service.yml
-		KubernetesFiles\postgres-deployment.yml = KubernetesFiles\postgres-deployment.yml
-		KubernetesFiles\postgres-pvc.yml = KubernetesFiles\postgres-pvc.yml
-		KubernetesFiles\postgres-service.yml = KubernetesFiles\postgres-service.yml
+		book-migrations-job.yml = book-migrations-job.yml
+		Dockerfile.migrations = Dockerfile.migrations
+		postgres-deployment.yml = postgres-deployment.yml
+		postgres-pvc.yml = postgres-pvc.yml
+		postgres-service.yml = postgres-service.yml
 	EndProjectSection
 EndProject
 Global
@@ -85,6 +87,10 @@ Global
 		{E8208A33-100A-49A7-902A-673137F13F4B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E8208A33-100A-49A7-902A-673137F13F4B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E8208A33-100A-49A7-902A-673137F13F4B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AB6AF4A8-9F43-46CA-9A58-78417E5A1D6F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AB6AF4A8-9F43-46CA-9A58-78417E5A1D6F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AB6AF4A8-9F43-46CA-9A58-78417E5A1D6F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AB6AF4A8-9F43-46CA-9A58-78417E5A1D6F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
