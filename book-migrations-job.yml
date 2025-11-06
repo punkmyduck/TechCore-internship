@@ -1,0 +1,15 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: book-migrations
+spec:
+  template:
+    spec:
+      containers:
+      - name: book-migrator
+        image: book-migrator:latest
+        imagePullPolicy: Never
+        envFrom:
+        - configMapRef:
+            name: book-service-config
+      restartPolicy: Never
