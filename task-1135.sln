@@ -32,6 +32,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YarpApiGateway", "YarpApiGa
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "KubernetesFiles", "KubernetesFiles", "{7A22F366-CD85-47AB-A849-0B0AFA5BD1E6}"
 	ProjectSection(SolutionItems) = preProject
+		KubernetesFiles\book-service-deployment.yml = KubernetesFiles\book-service-deployment.yml
+		KubernetesFiles\book-service-service.yml = KubernetesFiles\book-service-service.yml
 		KubernetesFiles\postgres-deployment.yml = KubernetesFiles\postgres-deployment.yml
 		KubernetesFiles\postgres-pvc.yml = KubernetesFiles\postgres-pvc.yml
 		KubernetesFiles\postgres-service.yml = KubernetesFiles\postgres-service.yml
