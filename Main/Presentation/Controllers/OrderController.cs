@@ -14,6 +14,11 @@ namespace task1135.Presentation.Controllers
             _bus = bus;
         }
 
+        /// <summary>
+        /// Отсылает "псевдо"событие в шину сообщений rabbitmq для обработки заказа
+        /// </summary>
+        /// <param name="items">Список элементов заказов (необязательно)</param>
+        /// <returns>Accepted в случае успеха</returns>
         [HttpPost]
         public async Task<IActionResult> Submit([FromBody] List<LineItem> items)
         {
