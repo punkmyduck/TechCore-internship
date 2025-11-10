@@ -47,7 +47,7 @@ namespace BookService.Application.Services
 
         public async Task AddAuthorToBookAsync(int bookId, int authorId)
         {
-            await _distributedCache.RemoveAsync($"book:{bookId}");
+            await ClearCache(bookId);
 
             await _bookRepository.AddBookAuthorAsync(bookId, authorId);
             await _bookRepository.SaveChangesAsync();

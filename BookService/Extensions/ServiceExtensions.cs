@@ -18,14 +18,19 @@ namespace BookService.Extensions
             services.AddScoped<IReportService, ReportService>();
             services.AddScoped<IProductReviewService, ProductReviewService>();
             services.AddScoped<IJwtService, JwtService>();
-            //services.AddScoped<IJsonPlaceholderService, JsonPlaceholderService>();
+        }
 
+        public static void AddValidatorsServices(this IServiceCollection services)
+        {
             services.AddFluentValidationAutoValidation();
             services.AddFluentValidationClientsideAdapters();
             services.AddValidatorsFromAssemblyContaining<CreateBookDtoFluentValidator>();
             services.AddValidatorsFromAssemblyContaining<UpdateBookDtoFluentValidator>();
             services.AddValidatorsFromAssemblyContaining<CreateReviewDtoFluentValidator>();
+        }
 
+        public static void AddPersistenceServices(this IServiceCollection services)
+        {
             services.AddScoped<IBookRepository, DatabaseBookRepository>();
             services.AddScoped<IAuthorRepository, DatabaseAuthorRepository>();
             services.AddScoped<IProductReviewRepository, ProductReviewRepository>();
