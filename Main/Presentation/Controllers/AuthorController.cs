@@ -5,7 +5,7 @@ using Domain.Services;
 namespace task1135.Presentation.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class AuthorController : ControllerBase
     {
         private readonly IAuthorService _authorService;

@@ -4,7 +4,7 @@ using Domain.Services;
 namespace task1135.Presentation.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class ReportController : ControllerBase
     {
         private readonly IReportService _reportService;
@@ -15,9 +15,10 @@ namespace task1135.Presentation.Controllers
 
         /// <summary>
         /// Получить отчет со всеми авторами и количеством их книг
+        /// Отчет формируется прямым SQL-запросом при помощи Dapper
         /// </summary>
         /// <returns>Список отчетов с именем автором и количеством его книг</returns>
-        [HttpGet]
+        [HttpGet("AuthorsBooksCount")]
         public async Task<IActionResult> GetBooksPerAuthor()
         {
             var reports = await _reportService.GetBooksPerAuthorAsync();
