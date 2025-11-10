@@ -1,9 +1,10 @@
-﻿using FluentValidation;
-using FluentValidation.AspNetCore;
+﻿using BookService.Application.BackgroundServices;
 using BookService.Application.Services;
 using BookService.Application.Validators;
 using Domain.Repositories;
 using Domain.Services;
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using Persistence.Infrastructure.Repositories;
 
 namespace BookService.Extensions
@@ -34,6 +35,11 @@ namespace BookService.Extensions
             services.AddScoped<IBookRepository, DatabaseBookRepository>();
             services.AddScoped<IAuthorRepository, DatabaseAuthorRepository>();
             services.AddScoped<IProductReviewRepository, ProductReviewRepository>();
+        }
+
+        public static void AddBackgroundServices(this IServiceCollection services)
+        {
+            services.AddHostedService<AverageRatingCalculatorService>();
         }
     }
 }

@@ -1,9 +1,7 @@
 using Persistence.Extensions;
 using BookService.Extensions;
-using BookService.Infrastructure.Middlewares;
 using Serilog;
 using Serilog.Sinks.Grafana.Loki;
-using BookService.Application.BackgroundServices;
 
 namespace BookService
 {
@@ -39,10 +37,11 @@ namespace BookService
             builder.AddRabbitMqMassTransit();
 
             //HostedServices configuration
-            builder.Services.AddHostedService<AverageRatingCalculatorService>();
+            builder.Services.AddBackgroundServices();
 
             //NoSQL configuration
-            builder.AddNoSqlServices();
+            builder.AddRedisService();
+            builder.AddMongoDbService();
 
             //Kafka configuration
             builder.AddKafkaProducer();
@@ -92,8 +91,7 @@ namespace BookService
             app.UseAuthentication();
             app.UseAuthorization();
 
-            app.UseMiddleware<TimingMiddleware>();
-            app.UseMiddleware<ExceptionHandlerMiddleware>();
+            app.UseCustomMiddlewares();
             app.UseOutputCache();
 
             app.MapControllers();
