@@ -2,13 +2,13 @@ using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
 using Persistence.Extensions;
 using task_1135.Extensions;
-using task1135.Application.Services;
 using task1135.Extensions;
 using task1135.Infrastructure.Middlewares;
 using Confluent.Kafka.Extensions.OpenTelemetry;
 using OpenTelemetry.Metrics;
 using Serilog;
 using Serilog.Sinks.Grafana.Loki;
+using task_1135.Application.BackgroundServices;
 
 namespace Domain
 {

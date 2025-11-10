@@ -15,6 +15,7 @@ namespace task1135.Presentation.Controllers
 
         /// <summary>
         /// Получить отчет со всеми авторами и количеством их книг
+        /// Отчет формируется прямым SQL-запросом при помощи Dapper
         /// </summary>
         /// <returns>Список отчетов с именем автором и количеством его книг</returns>
         [HttpGet]

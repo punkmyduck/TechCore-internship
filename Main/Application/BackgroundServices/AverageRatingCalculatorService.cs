@@ -3,7 +3,7 @@ using Microsoft.Extensions.Caching.Distributed;
 using MongoDB.Driver;
 using Domain.Models;
 
-namespace task1135.Application.Services
+namespace task_1135.Application.BackgroundServices
 {
     public class AverageRatingCalculatorService : BackgroundService
     {
