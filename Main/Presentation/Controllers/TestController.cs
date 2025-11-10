@@ -13,12 +13,26 @@ namespace task1135.Presentation.Controllers
     {
         private readonly MySettings _settings;
         private readonly ITimeService _timeService;
+        private readonly IJsonPlaceholderService _jsonPlaceholderService;
         public TestController(
             IOptions<MySettings> options,
-            ITimeService timeService)
+            ITimeService timeService,
+            IJsonPlaceholderService jsonPlaceholderService)
         {
             _settings = options.Value;
             _timeService = timeService;
+            _jsonPlaceholderService = jsonPlaceholderService;
+        }
+
+        /// <summary>
+        /// Отсылает REST-запрос к внешнему API-сервису JSONPlaceholder и возвращает результат
+        /// </summary>
+        /// <returns>Строка результата обращения к внешнему API</returns>
+        [HttpGet("todos/1")]
+        public async Task<IActionResult> GetTodosJson()
+        {
+            var result = await _jsonPlaceholderService.GetTodosJson();
+            return Ok(result);
         }
 
         /// <summary>

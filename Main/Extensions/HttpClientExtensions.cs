@@ -39,7 +39,7 @@ namespace task1135.Extensions
 
             services.AddHttpClient<IJsonPlaceholderService, JsonPlaceholderService>("JsonPlaceholder", client =>
             {
-                client.BaseAddress = new Uri("https://jsonplaceholder.typicode.com_inv/");
+                client.BaseAddress = new Uri("https://jsonplaceholder.typicode.com/");
                 client.Timeout = TimeSpan.FromSeconds(10);
             })
                 .AddPolicyHandler(combinedPolicy);
