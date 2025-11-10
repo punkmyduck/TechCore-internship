@@ -5,7 +5,7 @@ using Domain.Services;
 namespace task1135.Presentation.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class ProductReviewController : ControllerBase
     {
         private readonly IProductReviewService _productReviewService;
@@ -18,7 +18,7 @@ namespace task1135.Presentation.Controllers
         /// Получить все отзывы
         /// </summary>
         /// <returns>Список отзывов</returns>
-        [HttpGet("all")]
+        [HttpGet]
         public async Task<IActionResult> GetAllReviews()
         {
             return Ok(await _productReviewService.GetAllAsync());

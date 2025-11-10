@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace task1135.Presentation.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class OrderController : ControllerBase
     {
         private readonly IBus _bus;

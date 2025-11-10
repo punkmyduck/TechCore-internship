@@ -7,7 +7,7 @@ using Domain.Services;
 namespace task1135.Presentation.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class AuthController : ControllerBase
     {
         private readonly UserManager<ApplicationIdentityUser> _userManager;
