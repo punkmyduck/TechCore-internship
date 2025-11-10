@@ -117,7 +117,7 @@
   apigateway:
     build:
       context: ..
-      dockerfile: ./ApiGateway/Dockerfile
+      dockerfile: ./YarpApiGateway/Dockerfile
     container_name: apigateway
     depends_on:
       - api
