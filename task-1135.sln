@@ -3,15 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.13.35931.197
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "task-1135", "Main\task-1135.csproj", "{C72C6BBA-89A7-40CE-BD40-C8130DC08A43}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{CBCEA23A-4BE0-44A3-BD42-A3783BE4A115}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntegrationTests", "IntegrationTests\IntegrationTests.csproj", "{01DAB851-E046-4337-BBFD-7B6779C29265}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Contracts", "Contracts\Contracts.csproj", "{327A9305-5382-4DC4-9D92-6CEE400C15CE}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrderWorkerService.cs", "OrderWorkerService.cs\OrderWorkerService.cs.csproj", "{FA4A286D-7468-4602-A8A6-8B4B087ED112}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Persistence", "Persistence\Persistence.csproj", "{84D1BF01-EC93-4AA6-813B-7F6AF9ABCF2F}"
 EndProject
@@ -30,8 +26,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiGateway", "ApiGateway\Ap
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YarpApiGateway", "YarpApiGateway\YarpApiGateway.csproj", "{E8208A33-100A-49A7-902A-673137F13F4B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BookService", "BookService\BookService.csproj", "{AB6AF4A8-9F43-46CA-9A58-78417E5A1D6F}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Элементы решения", "Элементы решения", "{7F76711D-8062-44EE-84AB-CFB30BC06A49}"
 	ProjectSection(SolutionItems) = preProject
 		book-migrations-job.yml = book-migrations-job.yml
@@ -41,16 +35,18 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Элементы решен
 		postgres-service.yml = postgres-service.yml
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BookServiceDemo", "BookServiceDemo\BookServiceDemo.csproj", "{72225904-65B7-CC9F-77BD-83BC6587725C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BookService", "BookService\BookService.csproj", "{36AD51B1-5038-C7F3-82F4-C67EFCAD16E6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrderWorkerService", "OrderWorkerService\OrderWorkerService.csproj", "{9C78858B-CA01-FD0F-87A6-F9E015AC283B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{C72C6BBA-89A7-40CE-BD40-C8130DC08A43}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C72C6BBA-89A7-40CE-BD40-C8130DC08A43}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C72C6BBA-89A7-40CE-BD40-C8130DC08A43}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C72C6BBA-89A7-40CE-BD40-C8130DC08A43}.Release|Any CPU.Build.0 = Release|Any CPU
 		{CBCEA23A-4BE0-44A3-BD42-A3783BE4A115}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{CBCEA23A-4BE0-44A3-BD42-A3783BE4A115}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CBCEA23A-4BE0-44A3-BD42-A3783BE4A115}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -63,10 +59,6 @@ Global
 		{327A9305-5382-4DC4-9D92-6CEE400C15CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{327A9305-5382-4DC4-9D92-6CEE400C15CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{327A9305-5382-4DC4-9D92-6CEE400C15CE}.Release|Any CPU.Build.0 = Release|Any CPU
-		{FA4A286D-7468-4602-A8A6-8B4B087ED112}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FA4A286D-7468-4602-A8A6-8B4B087ED112}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FA4A286D-7468-4602-A8A6-8B4B087ED112}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FA4A286D-7468-4602-A8A6-8B4B087ED112}.Release|Any CPU.Build.0 = Release|Any CPU
 		{84D1BF01-EC93-4AA6-813B-7F6AF9ABCF2F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{84D1BF01-EC93-4AA6-813B-7F6AF9ABCF2F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{84D1BF01-EC93-4AA6-813B-7F6AF9ABCF2F}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -87,10 +79,18 @@ Global
 		{E8208A33-100A-49A7-902A-673137F13F4B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E8208A33-100A-49A7-902A-673137F13F4B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E8208A33-100A-49A7-902A-673137F13F4B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{AB6AF4A8-9F43-46CA-9A58-78417E5A1D6F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{AB6AF4A8-9F43-46CA-9A58-78417E5A1D6F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{AB6AF4A8-9F43-46CA-9A58-78417E5A1D6F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{AB6AF4A8-9F43-46CA-9A58-78417E5A1D6F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{72225904-65B7-CC9F-77BD-83BC6587725C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{72225904-65B7-CC9F-77BD-83BC6587725C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{72225904-65B7-CC9F-77BD-83BC6587725C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{72225904-65B7-CC9F-77BD-83BC6587725C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{36AD51B1-5038-C7F3-82F4-C67EFCAD16E6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{36AD51B1-5038-C7F3-82F4-C67EFCAD16E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{36AD51B1-5038-C7F3-82F4-C67EFCAD16E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{36AD51B1-5038-C7F3-82F4-C67EFCAD16E6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9C78858B-CA01-FD0F-87A6-F9E015AC283B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9C78858B-CA01-FD0F-87A6-F9E015AC283B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9C78858B-CA01-FD0F-87A6-F9E015AC283B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9C78858B-CA01-FD0F-87A6-F9E015AC283B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
