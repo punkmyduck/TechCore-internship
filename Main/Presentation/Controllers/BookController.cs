@@ -7,7 +7,7 @@ using Domain.Services;
 namespace task1135.Presentation.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class BookController : ControllerBase
     {
         private readonly IBookService _bookService;
@@ -102,7 +102,7 @@ namespace task1135.Presentation.Controllers
         /// </summary>
         /// <param name="id">Идентификатор книги</param>
         /// <returns>Информация о книге, авторах и отзывах к этой книге</returns>
-        [HttpGet("products/{id}/details")]
+        [HttpGet("{id}/details")]
         [Authorize]
         public async Task<IActionResult> GetDetails([FromRoute] int id)
         {
