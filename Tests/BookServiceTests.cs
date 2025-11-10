@@ -33,7 +33,7 @@ namespace Tests
 
             var reviewRepoMock = new Mock<IProductReviewRepository>();
 
-            var service = new BookService(repoMock.Object, cacheMock.Object, reviewRepoMock.Object);
+            var service = new task1135.Application.Services.BookService(repoMock.Object, cacheMock.Object, reviewRepoMock.Object);
 
             var result = await service.GetByIdAsync(1);
 

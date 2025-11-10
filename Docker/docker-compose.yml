@@ -88,7 +88,7 @@
   api:
     build:
       context: ..
-      dockerfile: ./Main/Dockerfile
+      dockerfile: ./BookService/Dockerfile
     container_name: api_service
     depends_on:
       - db
@@ -105,7 +105,7 @@
   worker:
     build:
       context: ..
-      dockerfile: ./OrderWorkerService.cs/Dockerfile
+      dockerfile: ./OrderWorkerService/Dockerfile
     container_name: order_worker
     depends_on:
       - rabbitmq

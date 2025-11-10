@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: book-service-demo
+  labels:
+    app: book-service-demo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: book-service-demo
+  template:
+    metadata:
+      labels:
+        app: book-service-demo
+    spec:
+      containers:
+        - name: book-service-demo
+          image: punkmyduck/book-service-demo:k8s
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 80
+          env:
+            - name: ASPNETCORE_ENVIRONMENT
+              value: Production
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: POSTGRES_PASSWORD
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: POSTGRES_USER
+            - name: POSTGRES_DB
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: POSTGRES_DB
+          volumeMounts:
+            - name: config-volume
+              mountPath: /app/appsettings.json
+              subPath: appsettings.json
+              readOnly: true
+      volumes:
+        - name: config-volume
+          configMap:
+            name: book-service-demo-config

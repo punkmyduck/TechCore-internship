@@ -17,8 +17,4 @@
     </PackageReference>
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Main\task-1135.csproj" />
-  </ItemGroup>
-
 </Project>
