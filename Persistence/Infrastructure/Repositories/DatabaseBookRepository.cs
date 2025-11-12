@@ -49,12 +49,13 @@ namespace Persistence.Infrastructure.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public async Task UpdateAsync(int id, Book updatedBook)
+        public async Task<Book> UpdateAsync(int id, Book updatedBook)
         {
             var book = await GetByIdAsync(id);
             if (book == null) throw new KeyNotFoundException($"Book with Id = {id} not found");
             book.Title = updatedBook.Title;
             book.YearPublished = updatedBook.YearPublished;
+            return book;
         }
     }
 }

@@ -148,7 +148,7 @@ namespace BookService.Application.Services
                 YearPublished = updateBookDto.YearPublished
             };
 
-            await _bookRepository.UpdateAsync(id, updatedBook);
+            book = await _bookRepository.UpdateAsync(id, updatedBook);
             await _bookRepository.SaveChangesAsync();
 
             return GetReturnBookDto(book);

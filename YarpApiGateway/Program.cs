@@ -86,6 +86,7 @@ namespace YarpApiGateway
             app.UseAuthentication();
             app.UseAuthorization();
 
+            app.MapPrometheusScrapingEndpoint();
 
             app.MapReverseProxy();
 
