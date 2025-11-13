@@ -47,7 +47,7 @@ namespace BookService.Application.Services
 
         public async Task AddAuthorToBookAsync(int bookId, int authorId)
         {
-            await _distributedCache.RemoveAsync($"book:{bookId}");
+            await ClearCache(bookId);
 
             await _bookRepository.AddBookAuthorAsync(bookId, authorId);
             await _bookRepository.SaveChangesAsync();
@@ -119,8 +119,9 @@ namespace BookService.Application.Services
             var reviews = await _productReviewRepository.GetReviewsForProductByIdAsync(id.ToString());
 
             var cachedAverageRating = await _distributedCache.GetStringAsync($"rating:{id}");
-            if (cachedAverageRating == null) throw new ArgumentNullException("Average product rating still not calculated, try again later");
-            double averageRating = JsonSerializer.Deserialize<double>(cachedAverageRating);
+            double averageRating;
+            if (cachedAverageRating == null) averageRating = 0;
+            else averageRating = JsonSerializer.Deserialize<double>(cachedAverageRating);
 
             var bookDetails = new ProductDetailsDto
             {
@@ -148,7 +149,7 @@ namespace BookService.Application.Services
                 YearPublished = updateBookDto.YearPublished
             };
 
-            await _bookRepository.UpdateAsync(id, updatedBook);
+            book = await _bookRepository.UpdateAsync(id, updatedBook);
             await _bookRepository.SaveChangesAsync();
 
             return GetReturnBookDto(book);

@@ -49,6 +49,7 @@ namespace BookService.Presentation.Controllers
         /// <param name="createBookDto">Запись с атрибутами книги</param>
         /// <returns>Информация о добавленной книге</returns>
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> AddBook([FromBody] CreateBookDto createBookDto)
         {
             var book = await _bookService.AddAsync(createBookDto);

@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bookservice
+  namespace: bookservice
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: bookservice
+  template:
+    metadata:
+      labels:
+        app: bookservice
+    spec:
+      containers:
+        - name: bookservice
+          image: bookservice:local
+          ports:
+            - containerPort: 8080
+              name: http
+          envFrom:
+            - configMapRef:
+                name: bookservice-config
+            - secretRef:
+                name: bookservice-secret
+          volumeMounts:
+            - name: config-volume
+              mountPath: /etc/config
+              readOnly: true
+            - name: secret-volume
+              mountPath: /etc/secret
+              readOnly: true
+      volumes:
+        - name: config-volume
+          configMap:
+            name: bookservice-config
+        - name: secret-volume
+          secret:
+            secretName: bookservice-secret

@@ -17,30 +17,6 @@ namespace KafkaConsumerWorker
 
             builder.Services.AddHostedService<KafkaConsumerService>();
 
-            builder.Services.AddOpenTelemetry()
-                .WithTracing(b =>
-                {
-                    b
-                    .SetResourceBuilder(ResourceBuilder.CreateDefault().AddService(builder.Environment.ApplicationName))
-                    .AddHttpClientInstrumentation()
-                    .AddAspNetCoreInstrumentation()
-                    .AddConfluentKafkaInstrumentation()
-                    .AddMassTransitInstrumentation()
-                    .AddZipkinExporter(o =>
-                    {
-                        o.Endpoint = new Uri(builder.Configuration.GetSection("ZipkinSettings")["Path"]!);
-                    });
-                });
-
-            builder.Services.AddOpenTelemetry()
-                .WithMetrics(b =>
-                {
-                    b
-                    .AddAspNetCoreInstrumentation()
-                    .AddHttpClientInstrumentation()
-                    .AddPrometheusExporter();
-                });
-
             var host = builder.Build();
             host.Run();
         }

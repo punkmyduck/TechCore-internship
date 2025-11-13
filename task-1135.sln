@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.13.35931.197
+# Visual Studio Version 18
+VisualStudioVersion = 18.3.11206.111
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{CBCEA23A-4BE0-44A3-BD42-A3783BE4A115}"
 EndProject
@@ -40,6 +40,22 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BookService", "BookService\BookService.csproj", "{36AD51B1-5038-C7F3-82F4-C67EFCAD16E6}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrderWorkerService", "OrderWorkerService\OrderWorkerService.csproj", "{9C78858B-CA01-FD0F-87A6-F9E015AC283B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "k8s", "k8s", "{9D5F33B4-5F3D-4C83-A1AF-0A818C6372E9}"
+	ProjectSection(SolutionItems) = preProject
+		k8s\kafka-nodepool.yaml = k8s\kafka-nodepool.yaml
+		k8s\rabbitmq-namespace.yaml = k8s\rabbitmq-namespace.yaml
+		k8s\rabbitmq-secret.yaml = k8s\rabbitmq-secret.yaml
+		k8s\rabbitmq-statefulset.yaml = k8s\rabbitmq-statefulset.yaml
+		k8s\redis-configmap.yaml = k8s\redis-configmap.yaml
+		k8s\redis-namespace.yaml = k8s\redis-namespace.yaml
+		k8s\redis-secret.yaml = k8s\redis-secret.yaml
+		k8s\redis-service.yaml = k8s\redis-service.yaml
+		k8s\redis-statefulset.yaml = k8s\redis-statefulset.yaml
+		k8s\strimzi-kafka-cr.yaml = k8s\strimzi-kafka-cr.yaml
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KafkaConsumerTest", "KafkaConsumerTest\KafkaConsumerTest.csproj", "{DDB75C8D-B5B2-48CD-BBE3-B975F0B79950}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -91,6 +107,10 @@ Global
 		{9C78858B-CA01-FD0F-87A6-F9E015AC283B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9C78858B-CA01-FD0F-87A6-F9E015AC283B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9C78858B-CA01-FD0F-87A6-F9E015AC283B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DDB75C8D-B5B2-48CD-BBE3-B975F0B79950}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DDB75C8D-B5B2-48CD-BBE3-B975F0B79950}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DDB75C8D-B5B2-48CD-BBE3-B975F0B79950}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DDB75C8D-B5B2-48CD-BBE3-B975F0B79950}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

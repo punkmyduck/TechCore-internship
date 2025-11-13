@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kafka-consumer-test
+  namespace: kafka
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kafka-consumer-test
+  template:
+    metadata:
+      labels:
+        app: kafka-consumer-test
+    spec:
+      containers:
+        - name: kafka-consumer-test
+          image: kafka-consumer-test:local
+          imagePullPolicy: IfNotPresent
+          envFrom:
+            - configMapRef:
+                name: kafka-consumer-test-config
+            - secretRef:
+                name: kafka-consumer-test-secret
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "500m"
+              memory: "512Mi"

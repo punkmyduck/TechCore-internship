@@ -1,0 +1,100 @@
+using Confluent.Kafka;
+using MongoDB.Driver;
+using KafkaConsumerTest.Settings;
+using KafkaConsumerTest.Services;
+using StackExchange.Redis;
+using MassTransit;
+
+namespace KafkaConsumerTest
+{
+    public class Program
+    {
+        public static void Main(string[] args)
+        {
+            var builder = Host.CreateApplicationBuilder(args);
+
+
+            //kafka test
+            var kafkaConf = builder.Configuration.GetSection("KafkaSettings").Get<KafkaSettings>();
+            if (kafkaConf == null) throw new ArgumentNullException("Can not to load kafka configuration");
+
+            builder.Services.AddSingleton<IConsumer<string, string>>(sp =>
+            {
+                var conf = new ConsumerConfig
+                {
+                    BootstrapServers = kafkaConf.BootstrapServers,
+                    GroupId = "bebra-group",
+                    AutoOffsetReset = AutoOffsetReset.Earliest,
+                    EnableAutoCommit = false,
+                    EnableAutoOffsetStore = false
+                };
+
+                var consumer = new ConsumerBuilder<string, string>(conf).Build();
+                consumer.Subscribe(kafkaConf.Topic);
+
+                return consumer;
+            });
+
+            builder.Services.AddHostedService<TestService>();
+
+            
+            //mongo test
+            builder.Services.Configure<MongoSettings>(builder.Configuration.GetSection("MongoSettings"));
+            var mongoSettings = builder.Configuration.GetSection("MongoSettings").Get<MongoSettings>();
+            if (mongoSettings == null) throw new ArgumentNullException("MongoSettings not found in configuration");
+            builder.Services.AddSingleton(mongoSettings);
+
+            builder.Services.AddSingleton<IMongoClient>(sp =>
+            {
+                var cfg = sp.GetRequiredService<MongoSettings>();
+                return new MongoClient(cfg.ConnectionString);
+            });
+
+            builder.Services.AddHostedService<MongoTest>();
+
+
+            //redis test
+            builder.Services.Configure<RedisSettings>(builder.Configuration.GetSection("RedisSettings"));
+            var redisSettings = builder.Configuration.GetSection("RedisSettings").Get<RedisSettings>();
+            builder.Services.AddSingleton(redisSettings!);
+            builder.Services.AddSingleton<IConnectionMultiplexer>(sp =>
+            {
+                var cfg = sp.GetRequiredService<RedisSettings>();
+                return ConnectionMultiplexer.Connect(cfg.ConnectionString);
+            });
+
+            builder.Services.AddHostedService<RedisTest>();
+
+
+            //rabbitmq test Ч читаем секцию "RabbitMQ" (соответствует ключам RabbitMQ__Host в ConfigMap)
+            var rabbitMqSettings = builder.Configuration.GetSection("RabbitMQ").Get<RabbitMqSettings>();
+            if (rabbitMqSettings == null)
+                throw new ArgumentNullException("RabbitMQ settings not found. Ensure ConfigMap/Secret keys use prefix RabbitMQ__");
+
+            builder.Services.AddHostedService<RabbitMqTestService>();
+
+            builder.Services.AddMassTransit(x =>
+            {
+                x.AddConsumer<RabbitMqConsumerTest>();
+
+                x.UsingRabbitMq((context, cfg) =>
+                {
+                    // используем overload с host + port, потом настраиваем virtual host и credentials
+                    cfg.Host(rabbitMqSettings!.Host, "/", h =>
+                    {
+                        h.Username(rabbitMqSettings.Username);
+                        h.Password(rabbitMqSettings.Password);
+                    });
+                    cfg.ReceiveEndpoint("rabbitmq-test-queue", e =>
+                    {
+                        e.ConfigureConsumer<RabbitMqConsumerTest>(context);
+                    });
+                });
+            });
+
+
+            var host = builder.Build();
+            host.Run();
+        }
+    }
+}

@@ -1,14 +1,7 @@
-using OpenTelemetry.Resources;
-using OpenTelemetry.Trace;
 using Persistence.Extensions;
 using BookService.Extensions;
-using BookService.Extensions;
-using BookService.Infrastructure.Middlewares;
-using Confluent.Kafka.Extensions.OpenTelemetry;
-using OpenTelemetry.Metrics;
 using Serilog;
 using Serilog.Sinks.Grafana.Loki;
-using BookService.Application.BackgroundServices;
 
 namespace BookService
 {
@@ -44,10 +37,11 @@ namespace BookService
             builder.AddRabbitMqMassTransit();
 
             //HostedServices configuration
-            builder.Services.AddHostedService<AverageRatingCalculatorService>();
+            builder.Services.AddBackgroundServices();
 
             //NoSQL configuration
-            builder.AddNoSqlServices();
+            builder.AddRedisService();
+            builder.AddMongoDbService();
 
             //Kafka configuration
             builder.AddKafkaProducer();
@@ -67,41 +61,15 @@ namespace BookService
 
             // Register application services
             builder.Services.AddApplicationServices();
+            builder.Services.AddPersistenceServices();
+            builder.Services.AddValidatorsServices();
 
             //JWT configuration
             builder.AddJwtAuthentication();
 
             //opentelemetry configuration
-            builder.Services.AddOpenTelemetry()
-                .WithTracing(b =>
-                {
-                    b
-                    .SetResourceBuilder(ResourceBuilder.CreateDefault().AddService(builder.Environment.ApplicationName))
-                    .AddHttpClientInstrumentation()
-                    .AddAspNetCoreInstrumentation()
-                    .AddConfluentKafkaInstrumentation()
-                    .AddMassTransitInstrumentation()
-                    .AddZipkinExporter(o =>
-                    {
-                        o.Endpoint = new Uri(builder.Configuration.GetSection("ZipkinSettings")["Path"]!);
-                    });
-                });
-
-            builder.Services.AddOpenTelemetry()
-                .WithMetrics(b =>
-                {
-                    b
-                    .AddAspNetCoreInstrumentation()
-                    .AddHttpClientInstrumentation()
-                    .AddPrometheusExporter();
-                });
-
-            builder.Services.AddOpenTelemetry()
-                .WithMetrics(b =>
-                {
-                    b.AddMeter("BookService.Metrics")
-                    .AddPrometheusExporter();
-                });
+            builder.AddOpenTelemetryTracing();
+            builder.AddPrometheusTracing();
 
 
             var app = builder.Build();
@@ -123,8 +91,7 @@ namespace BookService
             app.UseAuthentication();
             app.UseAuthorization();
 
-            app.UseMiddleware<TimingMiddleware>();
-            app.UseMiddleware<ExceptionHandlerMiddleware>();
+            app.UseCustomMiddlewares();
             app.UseOutputCache();
 
             app.MapControllers();
