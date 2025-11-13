@@ -1,6 +1,8 @@
 using Confluent.Kafka;
 using MongoDB.Driver;
-using Microsoft.Extensions.Options;
+using KafkaConsumerTest.Settings;
+using KafkaConsumerTest.Services;
+using StackExchange.Redis;
 
 namespace KafkaConsumerTest
 {
@@ -10,6 +12,8 @@ namespace KafkaConsumerTest
         {
             var builder = Host.CreateApplicationBuilder(args);
 
+
+            //kafka test
             var kafkaConf = builder.Configuration.GetSection("KafkaSettings").Get<KafkaSettings>();
             if (kafkaConf == null) throw new ArgumentNullException("Can not to load kafka configuration");
 
@@ -32,7 +36,8 @@ namespace KafkaConsumerTest
 
             builder.Services.AddHostedService<TestService>();
 
-            // ---- fix: use the same section name "MongoSettings" ----
+            
+            //mongo test
             builder.Services.Configure<MongoSettings>(builder.Configuration.GetSection("MongoSettings"));
             var mongoSettings = builder.Configuration.GetSection("MongoSettings").Get<MongoSettings>();
             if (mongoSettings == null) throw new ArgumentNullException("MongoSettings not found in configuration");
@@ -45,6 +50,19 @@ namespace KafkaConsumerTest
             });
 
             builder.Services.AddHostedService<MongoTest>();
+
+
+            //redis test
+            builder.Services.Configure<RedisSettings>(builder.Configuration.GetSection("RedisSettings"));
+            var redisSettings = builder.Configuration.GetSection("RedisSettings").Get<RedisSettings>();
+            builder.Services.AddSingleton(redisSettings!);
+            builder.Services.AddSingleton<IConnectionMultiplexer>(sp =>
+            {
+                var cfg = sp.GetRequiredService<RedisSettings>();
+                return ConnectionMultiplexer.Connect(cfg.ConnectionString);
+            });
+
+            builder.Services.AddHostedService<RedisTest>();
 
             var host = builder.Build();
             host.Run();

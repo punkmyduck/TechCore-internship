@@ -1,8 +1,9 @@
 ﻿using MongoDB.Driver;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using KafkaConsumerTest.Models;
 
-namespace KafkaConsumerTest
+namespace KafkaConsumerTest.Services
 {
     public class MongoTest : BackgroundService
     {

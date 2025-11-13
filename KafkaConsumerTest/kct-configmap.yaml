@@ -6,3 +6,5 @@ metadata:
 data:
   KafkaSettings__BootstrapServers: "my-cluster-kafka-bootstrap.kafka:9092"
   KafkaSettings__Topic: "test-topic"
+  RedisSettings__Host: "redis.redis.svc.cluster.local"
+  RedisSettings__Port: "6379"

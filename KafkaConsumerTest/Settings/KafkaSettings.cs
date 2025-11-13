@@ -1,4 +1,4 @@
-﻿namespace KafkaConsumerTest
+﻿namespace KafkaConsumerTest.Settings
 {
     public class KafkaSettings
     {

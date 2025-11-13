@@ -1,6 +1,6 @@
 ﻿using Confluent.Kafka;
 
-namespace KafkaConsumerTest
+namespace KafkaConsumerTest.Services
 {
     public class TestService : BackgroundService
     {

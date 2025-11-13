@@ -1,7 +1,7 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
-namespace KafkaConsumerTest
+namespace KafkaConsumerTest.Models
 {
     public class RealThing
     {
