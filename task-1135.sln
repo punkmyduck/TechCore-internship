@@ -44,6 +44,9 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "k8s", "k8s", "{9D5F33B4-5F3D-4C83-A1AF-0A818C6372E9}"
 	ProjectSection(SolutionItems) = preProject
 		k8s\kafka-nodepool.yaml = k8s\kafka-nodepool.yaml
+		k8s\rabbitmq-namespace.yaml = k8s\rabbitmq-namespace.yaml
+		k8s\rabbitmq-secret.yaml = k8s\rabbitmq-secret.yaml
+		k8s\rabbitmq-statefulset.yaml = k8s\rabbitmq-statefulset.yaml
 		k8s\redis-configmap.yaml = k8s\redis-configmap.yaml
 		k8s\redis-namespace.yaml = k8s\redis-namespace.yaml
 		k8s\redis-secret.yaml = k8s\redis-secret.yaml
