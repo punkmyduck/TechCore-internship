@@ -7,9 +7,8 @@ namespace Persistence.Infrastructure.Repositories
     public class ProductReviewRepository : IProductReviewRepository
     {
         private readonly IMongoCollection<ProductReview> _collection;
-        public ProductReviewRepository(IMongoClient client)
+        public ProductReviewRepository(IMongoDatabase database)
         {
-            var database = client.GetDatabase("booksdb");
             _collection = database.GetCollection<ProductReview>("reviews");
         }
         public async Task AddAsync(ProductReview productReview)

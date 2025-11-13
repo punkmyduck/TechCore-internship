@@ -12,6 +12,11 @@ namespace BookService.Extensions
 
             builder.Services.AddSingleton<IMongoClient>(sp =>
                 new MongoClient(mongoConfiguration.ConnectionString));
+            builder.Services.AddSingleton<IMongoDatabase>(sp =>
+            {
+                return sp.GetRequiredService<IMongoClient>()
+                    .GetDatabase("appdb");
+            });
         }
 
         public static void AddRedisService(this WebApplicationBuilder builder)

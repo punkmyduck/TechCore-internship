@@ -11,13 +11,12 @@ namespace BookService.Application.BackgroundServices
         private readonly IDistributedCache _distributedCache;
         private readonly ILogger<AverageRatingCalculatorService> _logger;
         public AverageRatingCalculatorService(
-            IMongoClient mongoClient,
+            IMongoDatabase dataBase,
             IDistributedCache distributedCache,
             ILogger<AverageRatingCalculatorService> logger
             )
         {
-            var db = mongoClient.GetDatabase("booksdb");
-            _reviews = db.GetCollection<ProductReview>("reviews");
+            _reviews = dataBase.GetCollection<ProductReview>("reviews");
             _distributedCache = distributedCache;
             _logger = logger;
         }
