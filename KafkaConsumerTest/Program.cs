@@ -23,7 +23,7 @@ namespace KafkaConsumerTest
                 var conf = new ConsumerConfig
                 {
                     BootstrapServers = kafkaConf.BootstrapServers,
-                    GroupId = "bebra-group",
+                    GroupId = "book-group",
                     AutoOffsetReset = AutoOffsetReset.Earliest,
                     EnableAutoCommit = false,
                     EnableAutoOffsetStore = false
@@ -65,8 +65,6 @@ namespace KafkaConsumerTest
 
             builder.Services.AddHostedService<RedisTest>();
 
-
-            //rabbitmq test Ч читаем секцию "RabbitMQ" (соответствует ключам RabbitMQ__Host в ConfigMap)
             var rabbitMqSettings = builder.Configuration.GetSection("RabbitMQ").Get<RabbitMqSettings>();
             if (rabbitMqSettings == null)
                 throw new ArgumentNullException("RabbitMQ settings not found. Ensure ConfigMap/Secret keys use prefix RabbitMQ__");
@@ -79,7 +77,6 @@ namespace KafkaConsumerTest
 
                 x.UsingRabbitMq((context, cfg) =>
                 {
-                    // используем overload с host + port, потом настраиваем virtual host и credentials
                     cfg.Host(rabbitMqSettings!.Host, "/", h =>
                     {
                         h.Username(rabbitMqSettings.Username);

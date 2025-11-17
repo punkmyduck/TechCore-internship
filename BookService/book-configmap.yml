@@ -11,7 +11,6 @@ data:
   RabbitMQ__Host: "rabbitmq.rabbitmq.svc.cluster.local"
   RabbitMQ__VirtualHost: "/"
 
-  RedisSettings__ConnectionString: "redis.redis.svc.cluster.local:6379"
   KafkaSettings__BootstrapServers: "my-cluster-kafka-bootstrap.kafka:9092"
   KafkaSettings__Topic: "book-events"
 
