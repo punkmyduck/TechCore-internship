@@ -18,7 +18,7 @@ namespace KafkaConsumerWorker
         {
             _logger = logger;
             _consumer = consumer;
-            _collection = mongoClient.GetDatabase("analyticsdb").GetCollection<BsonDocument>("events");
+            _collection = mongoClient.GetDatabase("appdb").GetCollection<BsonDocument>("events");
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)

@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: kafkaconsumerworker-config
+  namespace: bookservice
+data:
+  KafkaSettings__BootstrapServers: "my-cluster-kafka-bootstrap.kafka:9092"
+  KafkaSettings__Topic: "book-views"
+
+  ZipkinSettings__Path: "http://zipkin:9411/api/v2/spans"
