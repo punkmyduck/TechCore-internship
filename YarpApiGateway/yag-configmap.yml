@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: gateway-config
+  namespace: bookservice
+data:
+  ReverseProxy__Routes__AuthApi__ClusterId: "authCluster"
+  ReverseProxy__Routes__AuthApi__Match__Path: "/api/auth/{**catch-all}"
+  ReverseProxy__Routes__AuthApi__Order: "1"
+
+  ReverseProxy__Routes__BookApi__ClusterId: "bookApi"
+  ReverseProxy__Routes__BookApi__Match__Path: "/api/{**catch-all}"
+  ReverseProxy__Routes__BookApi__Order: "2"
+
+  ReverseProxy__Clusters__authCluster__Destinations__auth1__Address: "http://bookservice:8080/"
+  ReverseProxy__Clusters__bookApi__Destinations__book1__Address: "http://bookservice:8080/"
+
+  Jwt__Issuer: "BookApi"
+  Jwt__Audience: "BookApiClient"
+
+  ZipkinSettings__Path: "http://zipkin:9411/api/v2/spans"
